@@ -3,11 +3,17 @@
   "checkpoint_id": "01M41XP4FC3BE1X99RBGKEZYQA",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 6,
   "files_touched": [
+    ".env.example",
     ".gitignore",
+    "app/__init__.py",
+    "app/config.py",
     "app/main.py",
-    "tests/test_health.py"
+    "pyproject.toml",
+    "scripts/list_models.py",
+    "tests/test_health.py",
+    "uv.lock"
   ],
   "sessions": [
     {
@@ -16,13 +22,20 @@
       "compact_transcript": "/0/transcript.jsonl",
       "content_hash": "/0/content_hash.txt",
       "prompt": "/0/prompt.txt"
+    },
+    {
+      "metadata": "/1/metadata.json",
+      "transcript": "/1/full.jsonl",
+      "compact_transcript": "/1/transcript.jsonl",
+      "content_hash": "/1/content_hash.txt",
+      "prompt": "/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 16,
-    "cache_creation_tokens": 316915,
-    "cache_read_tokens": 939860,
-    "output_tokens": 2450,
-    "api_call_count": 8
+    "input_tokens": 82,
+    "cache_creation_tokens": 942539,
+    "cache_read_tokens": 7683203,
+    "output_tokens": 19314,
+    "api_call_count": 41
   }
 }
