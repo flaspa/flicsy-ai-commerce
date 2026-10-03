@@ -17,6 +17,7 @@ dist/
 # Large / third-party reference files (keep the rest of docs/ tracked)
 docs/mirapicks.mp4
 docs/AI Commerce Gallery Opening Ceremony.pdf
+docs/reference/How to Enable Trails.pdf
 
 # Editors / OS
 .vscode/
