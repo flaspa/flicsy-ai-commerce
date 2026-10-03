@@ -1,0 +1,9 @@
+Read docs/AI Commerce Gallery Opening Ceremony.pdf. I am configuring ZooWork for this project. Find the exact ZooWork API base URL, authentication method, relevant API/SDK endpoints, and any setup instructions in the presentation. Do not guess. If the base URL is not specified in the deck, say so explicitly and identify any ZooWork documentation URL in the slides that we should consult. Do not modify any code yet.
+
+---
+
+Read .agents/skills/zoowork-managed-agents completely. Determine how ZooWork authentication and SDK initialization work, whether I need to specify a base URL or whether the SDK handles it automatically, and which environment variables are required. Do not modify any files yet. Also summarize the minimal steps to create and run our first Flicsy agent.
+
+---
+
+Prepare the project for ZooWork using Python/FastAPI. First create .gitignore and exclude .env, remove the empty ZOOWORK_BASE_URL entry, add the minimal Python project structure and dependencies, and install/configure the ZooWork Python SDK. Do not create any ZooWork agents or billable resources yet. Add a small read-only script that calls list_models() so we can verify authentication and inspect the available models. Do not commit or push anything.
