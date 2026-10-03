@@ -1,0 +1,47 @@
+<pasted_content id="3978">
+We want one very small test-driven change so Entire captures a genuine FAIL → FIX → PASS sequence inside this Trail.
+
+Do not modify application behavior yet.
+
+1. Inspect the existing `/health` endpoint.
+2. Add the minimum test tooling needed for this Python project.
+3. Create one test that requires `/health` to return:
+   - HTTP 200
+   - status = "ok"
+   - service = "flicsy"
+
+4. Run only that test.
+
+I expect it to FAIL because the existing endpoint does not yet return `service = "flicsy"`.
+
+Stop immediately after showing me the failing test output.
+Do not fix the implementation.
+Do not commit.
+Do not push.
+</pasted_content id="3978">
+
+---
+
+<pasted_content id="3978">
+The failing health test has now been captured by Entire in checkpoint/session 7986cc66-133.
+
+Now fix only the `/health` endpoint so that the existing test passes.
+
+Requirements:
+- HTTP status remains 200
+- `status` remains `"ok"`
+- add `service` with the value `"flicsy"`
+
+Run the exact same health test again.
+
+Show me:
+1. the exact code change
+2. the exact test command
+3. the PASS result
+
+Do not make unrelated changes.
+Do not commit.
+Do not push.
+
+Stop after showing me the passing test result.
+</pasted_content id="3978">
