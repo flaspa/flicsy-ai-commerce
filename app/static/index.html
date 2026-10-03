@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flicsy — Your Personal Fashion Desk · by Mira Picks</title>
+<meta name="description" content="Flicsy: the Mira Picks fashion desk, now shopping for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111'/%3E%3Ctext x='32' y='46' font-family='Georgia,serif' font-size='42' fill='%23f5f2ed' text-anchor='middle'%3EF%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+<!-- ============ 1. MIRA PICKS → FLICSY INTRO ============ -->
+<section class="view" id="view-intro" data-view="intro">
+  <div class="topbar"><span id="today"></span><span>An AI-edited fashion publication</span></div>
+  <header class="masthead">
+    <a href="#/">Mira Picks</a>
+    <p class="tagline">Only the pieces that earn a feature.</p>
+  </header>
+  <nav class="site-nav"><ul><li><a class="on" href="#/">Cover</a></li><li><a href="#/stylist">Flicsy</a></li><li><a href="#desk-band">The Desk</a></li><li><a href="#/desk">Meet the Team</a></li></ul></nav>
+
+  <article class="lead">
+    <div class="lead-img"><img src="/img/products/womens-textured-halter-midi-dress-open-air-blue-1.jpg" alt="Model in the Everlane Textured Halter Midi Dress in Open Air Blue"></div>
+    <div class="lead-copy">
+      <div class="kicker"><span class="dot"></span>Cover story · Mira Picks announces</div>
+      <h1>Mira Picks launches <em>Flicsy.</em></h1>
+      <p class="deck">We spent a season deciding which pieces earned a feature. Now the same AI fashion desk works for one reader at a time — and it doesn't just tell you what's fashionable. <strong>It shops for you.</strong></p>
+      <div class="byline">By the Mira Picks desk<br><span>Miranda · Andy · Emily · Nigel — and, joining the desk, Serena</span></div>
+      <a class="cta" href="#/stylist">Meet Flicsy — Your Personal Fashion Desk <span aria-hidden="true">→</span></a>
+    </div>
+  </article>
+
+  <section class="verdict">
+    <p class="verdict-label">How it works</p>
+    <blockquote>“Tell Miranda where you're going. The desk researches, shops, argues, and comes back with looks you can buy.”</blockquote>
+    <div class="strip">
+      <a class="strip-img" href="#/stylist"><img src="/img/products/womens-dream-blazer-navy-1.jpg" alt=""><span class="strip-cap">01 · Tell Miranda the occasion</span></a>
+      <a class="strip-img" href="#/stylist"><img src="/img/products/f-otwr-mlc-puff-sht-cblu-1.jpg" alt=""><span class="strip-cap">02 · The desk researches and shops</span></a>
+      <a class="strip-img" href="#/stylist"><img src="/img/products/womens-strapless-dress-in-silk-charmeuse-black-1.jpg" alt=""><span class="strip-cap">03 · Miranda presents your looks</span></a>
+    </div>
+  </section>
+
+  <section class="mp-desk" id="desk-band">
+    <div>
+      <h2>Researched by agents.<br><em>Styled by Miranda.</em></h2>
+      <a class="mp-team" href="#/desk">Meet the desk →</a>
+    </div>
+    <div class="mp-roles" id="intro-roles"></div>
+  </section>
+  <footer class="mp-foot"><span>© <span class="year"></span> Mira Picks · Flicsy</span><span>Phase 1 demo · mock data · Everlane catalog snapshot</span></footer>
+</section>
+
+<!-- ============ FLICSY APP SHELL ============ -->
+<div class="app" id="app-shell" hidden>
+  <div class="topbar"><a href="#/">← Mira Picks</a><span>Flicsy · A Mira Picks company</span><button class="bag-btn" id="bag-btn" type="button">Bag <span id="bag-count">0</span></button></div>
+  <header class="app-mast">
+    <a href="#/stylist" class="wordmark">Flicsy</a>
+    <p class="tagline">Your personal fashion desk.</p>
+  </header>
+  <nav class="site-nav app-nav"><ul>
+    <li><a href="#/stylist" data-nav="stylist">Your Stylist</a></li>
+    <li><a href="#/desk" data-nav="desk">The Fashion Desk</a></li>
+    <li><a href="#/curtain" data-nav="curtain">Behind the Curtain</a></li>
+    <li><a href="#/looks" data-nav="looks">Your Looks</a></li>
+  </ul></nav>
+
+  <!-- ============ 2. YOUR STYLIST ============ -->
+  <section class="view" id="view-stylist" data-view="stylist">
+    <div class="stylist">
+      <div class="convo">
+        <div class="convo-head">
+          <img src="/characters/miranda.png" alt="Miranda">
+          <div><div class="kicker"><span class="dot"></span>Your stylist</div><h2>Miranda</h2><p>Lead Stylist · formerly Editor-in-Chief, Mira Picks</p></div>
+        </div>
+        <div class="thread" id="thread"></div>
+        <div class="composer" id="composer">
+          <div class="chips" id="chips"></div>
+          <form id="compose-form" class="compose-row">
+            <textarea id="compose" rows="3" placeholder="Tell Miranda where you're going…"></textarea>
+            <button type="submit" class="btn-ink">Send</button>
+          </form>
+        </div>
+      </div>
+      <aside class="brief">
+        <div class="brief-head"><span class="label">The brief</span><span class="brief-state" id="brief-state">Drafting</span></div>
+        <dl id="brief-list"></dl>
+        <label class="photo" id="photo-drop">
+          <input type="file" id="photo-input" accept="image/*" hidden>
+          <span class="photo-preview" id="photo-preview"></span>
+          <span class="photo-copy"><strong>Add a recent photo</strong><br>Optional. Stays in your browser in this demo.</span>
+        </label>
+        <button class="cta cta-block" id="consult-btn" type="button" disabled>Consult the Fashion Desk <span aria-hidden="true">→</span></button>
+        <p class="fine">Miranda asks only what changes the recommendation.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ 3. THE FASHION DESK ============ -->
+  <section class="view" id="view-desk" data-view="desk">
+    <div class="desk-intro">
+      <p class="desk-tag"><em>Miranda briefs. Andy reads the press. Emily reads the room. Serena shops. Nigel pushes back. Miranda decides.</em></p>
+      <div class="run-bar">
+        <div class="run-brief" id="run-brief">No brief yet — start with <a href="#/stylist">Your Stylist</a>, or play the demo run.</div>
+        <div class="run-actions">
+          <button class="btn-line" id="play-btn" type="button">Play demo run</button>
+          <button class="btn-line" id="skip-btn" type="button" hidden>Skip to result</button>
+        </div>
+      </div>
+    </div>
+    <div class="stages" id="stages"></div>
+    <div class="drawers" id="drawers"></div>
+  </section>
+
+  <!-- ============ 4. BEHIND THE CURTAIN ============ -->
+  <section class="view curtain-view" id="view-curtain" data-view="curtain">
+    <div class="room">
+      <aside class="room-side">
+        <div class="room-brand">band<span>://</span></div>
+        <div class="room-name" id="room-name">#flicsy-gala-sf</div>
+        <p class="room-meta">Mock room · Phase 1<br>Streams from Band in Phase 2</p>
+        <div class="room-sec">Seats</div>
+        <ul class="seats" id="seats"></ul>
+        <div class="room-sec">Tools</div>
+        <ul class="tools-list"><li><b>tavily</b> → @andy</li><li><b>brightdata</b> → @emily</li><li><b>moss</b> → @serena</li></ul>
+        <div class="room-sec">Legend</div>
+        <ul class="legend"><li><i class="lg mention"></i>@mention routes work</li><li><i class="lg tool"></i>tool call</li><li><i class="lg reject"></i>rejection</li><li><i class="lg approve"></i>final approval</li></ul>
+      </aside>
+      <div class="room-main">
+        <div class="room-top"><span>Every message is timestamped, addressed, and replayable.</span><span class="live" id="room-live">idle</span></div>
+        <ol class="feed" id="feed"><li class="feed-empty">The room is quiet. <button class="link" id="curtain-play" type="button">Play the demo run</button> or consult the desk from <a href="#/stylist">Your Stylist</a>.</li></ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 5. MIRANDA'S EDIT / YOUR LOOKS ============ -->
+  <section class="view" id="view-looks" data-view="looks">
+    <header class="looks-hero">
+      <div class="kicker"><span class="dot"></span>Miranda's Edit</div>
+      <h1 id="looks-title">For your gala, Miranda selected these looks.</h1>
+      <p class="deck">Three complete looks from the Everlane catalog, researched by Andy and Emily, shopped by Serena, argued over by Nigel, and chosen by Miranda.</p>
+    </header>
+    <div id="looks"></div>
+  </section>
+
+  <footer class="mp-foot"><span>© <span class="year"></span> Flicsy · A Mira Picks company</span><span>Phase 1 demo · mock data · Everlane catalog snapshot 2026-10-03</span></footer>
+</div>
+
+<!-- Bag drawer -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="bag" id="bag" aria-label="Your bag" hidden>
+  <div class="bag-head"><h3>Your bag</h3><button class="link" id="bag-close" type="button">Close</button></div>
+  <ul class="bag-items" id="bag-items"></ul>
+  <div class="bag-foot">
+    <div class="bag-total"><span>Total</span><span id="bag-total">$0</span></div>
+    <button class="cta cta-block" id="checkout-btn" type="button">Checkout <span aria-hidden="true">→</span></button>
+    <p class="fine">Stripe test-mode checkout connects in Phase 2. No real order is placed with the retailer.</p>
+  </div>
+</aside>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
