@@ -1,0 +1,110 @@
+{
+  "cli_version": "0.11.3",
+  "checkpoint_id": "01M41Z9C8S5ZM3RBJBBF6FEQR2",
+  "session_id": "7986cc66-1336-4cc3-85fb-d9c16d42351e",
+  "strategy": "manual-commit",
+  "created_at": "2026-10-03T22:48:53.3155167Z",
+  "branch": "main",
+  "checkpoints_count": 4,
+  "save_step_count": 4,
+  "files_touched": [
+    "app/agents.py",
+    "app/main.py",
+    "app/static/app.js",
+    "app/static/data.js",
+    "app/static/img/products/f-otwr-mlc-puff-sht-cblu-1.jpg",
+    "app/static/img/products/f-otwr-mlc-puff-sht-cblu-2.jpg",
+    "app/static/img/products/mens-tropical-wool-trouser-dark-navy-1.jpg",
+    "app/static/img/products/mens-tropical-wool-trouser-dark-navy-2.jpg",
+    "app/static/img/products/u-accs-wlc-scrf-hood-clst-1.jpg",
+    "app/static/img/products/u-accs-wlc-scrf-hood-clst-2.jpg",
+    "app/static/img/products/u-ftwr-cgm-sum-boot-nvy-1.jpg",
+    "app/static/img/products/u-ftwr-cgm-sum-boot-nvy-2.jpg",
+    "app/static/img/products/womens-ballet-slingback-heel-black-1.jpg",
+    "app/static/img/products/womens-ballet-slingback-heel-black-2.jpg",
+    "app/static/img/products/womens-banana-pump-black-suede-1.jpg",
+    "app/static/img/products/womens-banana-pump-black-suede-2.jpg",
+    "app/static/img/products/womens-cashmere-slim-crew-sweater-green-blue-1.jpg",
+    "app/static/img/products/womens-cashmere-slim-crew-sweater-green-blue-2.jpg",
+    "app/static/img/products/womens-dream-blazer-navy-1.jpg",
+    "app/static/img/products/womens-dream-blazer-navy-2.jpg",
+    "app/static/img/products/womens-glove-mule-slipper-black-leather-1.jpg",
+    "app/static/img/products/womens-glove-mule-slipper-black-leather-2.jpg",
+    "app/static/img/products/womens-knit-square-neck-midi-dress-reflecting-pond-1.jpg",
+    "app/static/img/products/womens-knit-square-neck-midi-dress-reflecting-pond-2.jpg",
+    "app/static/img/products/womens-leather-boxy-tote-black-pebble-leather-1.jpg",
+    "app/static/img/products/womens-leather-boxy-tote-black-pebble-leather-2.jpg",
+    "app/static/img/products/womens-scarf-tie-mini-dress-georgette-mens-navy-birch-1.jpg",
+    "app/static/img/products/womens-scarf-tie-mini-dress-georgette-mens-navy-birch-2.jpg",
+    "app/static/img/products/womens-slip-skirt-in-silk-charmeuse-bone-1.jpg",
+    "app/static/img/products/womens-slip-skirt-in-silk-charmeuse-bone-2.jpg",
+    "app/static/img/products/womens-strapless-dress-in-silk-charmeuse-black-1.jpg",
+    "app/static/img/products/womens-strapless-dress-in-silk-charmeuse-black-2.jpg",
+    "app/static/img/products/womens-textured-halter-midi-dress-open-air-blue-1.jpg",
+    "app/static/img/products/womens-textured-halter-midi-dress-open-air-blue-2.jpg",
+    "app/static/img/products/womens-utility-seamed-wide-leg-pant-navy-1.jpg",
+    "app/static/img/products/womens-utility-seamed-wide-leg-pant-navy-2.jpg",
+    "app/static/index.html",
+    "app/static/styles.css",
+    "scripts/live_run.py",
+    "scripts/setup_agents.py"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-5-5",
+  "turn_id": "44e9b9863ace",
+  "checkpoint_transcript_start": 464,
+  "transcript_lines_at_start": 464,
+  "compact_transcript_start": 66,
+  "token_usage": {
+    "input_tokens": 80,
+    "cache_creation_tokens": 314614,
+    "cache_read_tokens": 9633339,
+    "output_tokens": 73962,
+    "api_call_count": 40
+  },
+  "session_metrics": {
+    "turn_count": 11
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-10-03T22:48:53.0839179Z",
+    "agent_lines": 1371,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 1371,
+    "total_lines_changed": 1371,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1114,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1114,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1114,
+      "agent_lines_removed": 0
+    }
+  ]
+}

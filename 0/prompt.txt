@@ -1,0 +1,365 @@
+<pasted_content id="3978">
+We are now starting the real Flicsy hackathon implementation.
+
+Our immediate priority is to BUILD THE UI FIRST.
+
+IMPORTANT VISUAL DIRECTION
+
+You previously inspected `docs/mirapicks.mp4`.
+
+Use that Mira Picks video as the PRIMARY visual and interaction reference for Flicsy.
+
+Also inspect:
+- `docs/PROJECT_OVERVIEW.md`
+- the existing Flicsy repository
+- the Mira Picks reference project in this VS Code workspace
+- the existing character assets in `assets/characters/`
+
+Revisit/re-inspect frames from `docs/mirapicks.mp4` if useful.
+
+Flicsy should feel like a natural product launched by the Mira Picks editorial team.
+
+It should NOT look like a generic AI SaaS dashboard.
+
+Carry forward the strongest Mira Picks visual patterns:
+- typography
+- editorial composition
+- spacing
+- imagery
+- character presentation
+- cards/panels
+- fashion-magazine feel
+- workflow/progression presentation
+
+PHASE 1 GOAL
+
+Build a polished, complete, clickable front-end demo of the Flicsy customer journey using realistic mock data.
+
+DO NOT integrate ZooWork, Band, Tavily, Bright Data, Moss, or Stripe yet.
+
+We will connect those after the customer-facing experience works.
+
+BUILD THESE VIEWS
+
+1. MIRA PICKS → FLICSY INTRO
+
+Establish the origin story:
+
+Mira Picks was an AI-native fashion magazine.
+
+Flicsy is the business its editorial team launches next: the same AI fashion desk no longer just tells the customer what is fashionable — it shops for them.
+
+Include a strong CTA:
+
+“Meet Flicsy — Your Personal Fashion Desk”
+
+Use the Mira Picks visual language from the video.
+
+2. YOUR STYLIST
+
+Miranda is the customer-facing stylist.
+
+Use Miranda's portrait from `assets/characters/`.
+
+Create an elegant conversational styling interface.
+
+Use this example customer request:
+
+“I’m going to a gala dinner in San Francisco next month. I love skiing, I wear a lot of blue, and I’d like something elegant but not conventional.”
+
+Allow the interface to represent:
+- occasion
+- budget
+- style preferences
+- dress vs suit
+- dislikes
+- optional customer photo upload
+
+Simulate Miranda asking 2–4 concise clarifying questions.
+
+Then provide a CTA such as:
+
+“Consult the Fashion Desk”
+
+3. THE FASHION DESK
+
+Create a visually strong workflow:
+
+Miranda → Andy → Emily → Serena → Nigel → Miranda
+
+Use these character assets:
+
+- `miranda.png`
+- `andy.png`
+- `emily.png`
+- `serena.png`
+- `nigel.png`
+
+Roles:
+
+Miranda — Lead Stylist
+Customer-facing. Creates the brief, delegates, and makes the final selection.
+
+Andy — Fashion Editor
+Question: “What does the fashion establishment suggest?”
+Eventually uses Tavily.
+
+Emily — Social & Culture Editor
+Question: “What are people actually wearing and talking about?”
+Eventually uses Bright Data / Mira Picks social evidence.
+
+Serena — Personal Shopper
+Question: “What can the client actually buy?”
+Eventually searches Moss retailer catalogs.
+
+Nigel — Fashion Director / Critic
+Reviews coherence, fit, occasion, budget, evidence, and styling.
+Can reject a choice and request a substitution.
+
+Each agent card should show:
+- portrait
+- name
+- role
+- one-line responsibility
+- status: waiting / working / complete
+
+Simulate progression through the agents so judges can understand the workflow immediately.
+
+Add expandable sections:
+
+- Andy’s Press Desk
+- Emily’s Clipping Book
+- Serena’s Shopping Bag
+- Nigel’s Notes
+
+4. BEHIND THE CURTAIN
+
+This page will eventually expose the actual Band room.
+
+For Phase 1, create a realistic mocked coordination view showing:
+
+- agent messages
+- @mentions
+- timestamps
+- handoffs
+- tool activity
+- Miranda assigning work
+- Andy and Emily returning evidence
+- Serena assembling outfits
+- Nigel questioning or rejecting one item
+- Serena revising it
+- final handoff to Miranda
+
+This should feel different from the polished customer UI.
+
+It should make it obvious that these are multiple collaborating agents rather than one chatbot pretending to be several agents.
+
+5. MIRANDA’S EDIT / YOUR LOOKS
+
+Create 2–3 polished complete outfit recommendations.
+
+For each look show:
+
+- strong fashion/product imagery
+- product names
+- retailer
+- price
+- availability
+- total outfit price
+- Miranda’s short rationale
+- Add Look to Cart
+- Refine This Look
+
+Use realistic mock product data for now.
+
+We will replace this with Moss results later.
+
+NAVIGATION
+
+Use:
+
+Your Stylist | The Fashion Desk | Behind the Curtain | Your Looks
+
+DESIGN PRINCIPLES
+
+- Mira Picks video is the primary visual reference.
+- Editorial fashion product, not enterprise dashboard.
+- Strong imagery.
+- Strong composition.
+- Preserve the playful movie-character fashion-desk concept.
+- Desktop-first for the hackathon presentation.
+- Judges should understand the concept within seconds.
+- Prioritize visual polish and a complete clickable journey.
+- Use mock data wherever needed.
+- Do not overengineer.
+- Do not build backend integrations yet.
+
+IMPLEMENTATION PROCESS
+
+1. First inspect the existing project, Mira Picks reference project, and Mira Picks video.
+
+2. Give me a VERY SHORT report containing:
+   - existing frontend stack
+   - visual elements from Mira Picks you will carry over
+   - files you plan to create/change
+
+Do not stop and wait for approval unless there is a genuine blocker.
+
+3. Immediately implement Phase 1.
+
+4. Run the application locally.
+
+5. Test the main navigation and customer journey.
+
+6. Give me:
+   - local URL
+   - files created/changed
+   - what is working
+   - any blockers
+
+Do not commit.
+Do not push.
+
+Focus on getting a beautiful working UI in front of me as quickly as possible.
+</pasted_content id="3978">
+
+---
+
+After implementation:
+
+1. Start the local development server yourself.
+2. Keep it running.
+3. Tell me the exact localhost URL to open in my browser.
+4. Verify that the page loads without errors.
+5. Click through and test only the critical demo path:
+   - Mira Picks → Flicsy intro
+   - Your Stylist
+   - Consult the Fashion Desk
+   - Fashion Desk agent progression
+   - Behind the Curtain
+   - Your Looks
+   - Add Look to Cart
+   - Refine This Look
+
+TIME CONSTRAINT:
+We are now in rapid hackathon execution mode. Move as quickly as possible.
+
+Do not run broad, exhaustive, or unnecessary tests.
+Do not spend time on refactoring, cleanup, edge cases, abstractions, or nonessential polish.
+Only test enough to confirm the critical demo flow works and the UI loads without obvious errors.
+
+If something noncritical is imperfect, leave it and report it rather than spending time fixing it.
+
+Do not stop after writing the code. I need a running application that I can inspect in my browser as soon as possible.
+
+---
+
+uv run python scripts/list_models.py
+
+---
+
+<pasted_content id="3978">
+We now have these ZooWork model assignments already present in `.env`:
+
+MIRANDA_MODEL
+ANDY_MODEL
+EMILY_MODEL
+SERENA_MODEL
+NIGEL_MODEL
+
+Do not modify `.env`.
+
+We are now integrating ZooWork, but DEMO SPEED AND RELIABILITY ARE CRITICAL.
+
+The existing UI is fast and working. Preserve it.
+
+GOAL:
+Create the five Flicsy characters as real ZooWork managed agents without making the demo fragile or unnecessarily slow.
+
+Agents:
+- Miranda — Lead Stylist
+- Andy — Fashion Editor
+- Emily — Social & Culture Editor
+- Serena — Personal Shopper
+- Nigel — Fashion Director / Critic
+
+Use each agent's model from its corresponding `.env` variable.
+
+IMPORTANT PERFORMANCE RULES:
+
+1. DO NOT create/start the five ZooWork agents on every styling request.
+   Create them once and reuse them.
+
+2. Persist their agent IDs locally in a small non-secret config/state file so subsequent runs can reuse existing agents rather than recreate them.
+
+3. Before creating an agent, check whether we already have a valid saved agent ID.
+
+4. Start/wait for agents only during setup, not during the customer-facing critical path whenever possible.
+
+5. Andy and Emily must run IN PARALLEL because their research tasks are independent.
+
+6. The critical execution order should be:
+
+   Miranda brief
+        ↓
+   Andy + Emily IN PARALLEL
+        ↓
+   Serena
+        ↓
+   Nigel
+        ↓
+   Miranda final
+
+7. Keep prompts concise and outputs compact. This is a hackathon demo, not a long-form analysis workflow.
+
+8. Preserve the existing mock data and current UI as FALLBACKS.
+   If ZooWork fails, times out, or becomes too slow, the demo must continue.
+
+9. Do not remove the existing "Skip to result" behavior.
+
+10. Keep the current UI structure unchanged.
+
+IMPLEMENTATION APPROACH:
+
+First create a setup script that:
+- reads the five model IDs from `.env`
+- creates the five ZooWork agents if they do not already exist
+- assigns each its role-specific system prompt
+- starts them
+- waits until they are running
+- saves the resulting agent IDs for reuse
+
+Then add the smallest backend abstraction needed to invoke those agents.
+
+For this step, DO NOT yet connect Tavily, Bright Data, Moss, Band, or Stripe.
+We first want to prove that the five ZooWork agents can run with their assigned models.
+
+TEST ONLY ONE MINIMAL END-TO-END AGENT RUN.
+
+Measure and report:
+- agent creation/setup time
+- Miranda latency
+- Andy latency
+- Emily latency
+- Andy + Emily parallel elapsed time
+- Serena latency
+- Nigel latency
+- final Miranda latency
+- total end-to-end elapsed time
+
+If total latency is substantially slower than the current demo, do not redesign anything. Report it so we can decide how much of the live pipeline should run during the presentation.
+
+Do not run broad tests.
+Do not refactor unrelated code.
+Do not commit.
+Do not push.
+
+Move quickly.
+
+At the end report only:
+- five agent IDs created/reused
+- model assigned to each
+- setup time
+- measured live-run latency
+- any errors
+</pasted_content id="3978">
