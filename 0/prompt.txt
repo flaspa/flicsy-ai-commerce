@@ -1,0 +1,1594 @@
+<pasted_content id="3978">
+We are now starting the real Flicsy hackathon implementation.
+
+Our immediate priority is to BUILD THE UI FIRST.
+
+IMPORTANT VISUAL DIRECTION
+
+You previously inspected `docs/mirapicks.mp4`.
+
+Use that Mira Picks video as the PRIMARY visual and interaction reference for Flicsy.
+
+Also inspect:
+- `docs/PROJECT_OVERVIEW.md`
+- the existing Flicsy repository
+- the Mira Picks reference project in this VS Code workspace
+- the existing character assets in `assets/characters/`
+
+Revisit/re-inspect frames from `docs/mirapicks.mp4` if useful.
+
+Flicsy should feel like a natural product launched by the Mira Picks editorial team.
+
+It should NOT look like a generic AI SaaS dashboard.
+
+Carry forward the strongest Mira Picks visual patterns:
+- typography
+- editorial composition
+- spacing
+- imagery
+- character presentation
+- cards/panels
+- fashion-magazine feel
+- workflow/progression presentation
+
+PHASE 1 GOAL
+
+Build a polished, complete, clickable front-end demo of the Flicsy customer journey using realistic mock data.
+
+DO NOT integrate ZooWork, Band, Tavily, Bright Data, Moss, or Stripe yet.
+
+We will connect those after the customer-facing experience works.
+
+BUILD THESE VIEWS
+
+1. MIRA PICKS → FLICSY INTRO
+
+Establish the origin story:
+
+Mira Picks was an AI-native fashion magazine.
+
+Flicsy is the business its editorial team launches next: the same AI fashion desk no longer just tells the customer what is fashionable — it shops for them.
+
+Include a strong CTA:
+
+“Meet Flicsy — Your Personal Fashion Desk”
+
+Use the Mira Picks visual language from the video.
+
+2. YOUR STYLIST
+
+Miranda is the customer-facing stylist.
+
+Use Miranda's portrait from `assets/characters/`.
+
+Create an elegant conversational styling interface.
+
+Use this example customer request:
+
+“I’m going to a gala dinner in San Francisco next month. I love skiing, I wear a lot of blue, and I’d like something elegant but not conventional.”
+
+Allow the interface to represent:
+- occasion
+- budget
+- style preferences
+- dress vs suit
+- dislikes
+- optional customer photo upload
+
+Simulate Miranda asking 2–4 concise clarifying questions.
+
+Then provide a CTA such as:
+
+“Consult the Fashion Desk”
+
+3. THE FASHION DESK
+
+Create a visually strong workflow:
+
+Miranda → Andy → Emily → Serena → Nigel → Miranda
+
+Use these character assets:
+
+- `miranda.png`
+- `andy.png`
+- `emily.png`
+- `serena.png`
+- `nigel.png`
+
+Roles:
+
+Miranda — Lead Stylist
+Customer-facing. Creates the brief, delegates, and makes the final selection.
+
+Andy — Fashion Editor
+Question: “What does the fashion establishment suggest?”
+Eventually uses Tavily.
+
+Emily — Social & Culture Editor
+Question: “What are people actually wearing and talking about?”
+Eventually uses Bright Data / Mira Picks social evidence.
+
+Serena — Personal Shopper
+Question: “What can the client actually buy?”
+Eventually searches Moss retailer catalogs.
+
+Nigel — Fashion Director / Critic
+Reviews coherence, fit, occasion, budget, evidence, and styling.
+Can reject a choice and request a substitution.
+
+Each agent card should show:
+- portrait
+- name
+- role
+- one-line responsibility
+- status: waiting / working / complete
+
+Simulate progression through the agents so judges can understand the workflow immediately.
+
+Add expandable sections:
+
+- Andy’s Press Desk
+- Emily’s Clipping Book
+- Serena’s Shopping Bag
+- Nigel’s Notes
+
+4. BEHIND THE CURTAIN
+
+This page will eventually expose the actual Band room.
+
+For Phase 1, create a realistic mocked coordination view showing:
+
+- agent messages
+- @mentions
+- timestamps
+- handoffs
+- tool activity
+- Miranda assigning work
+- Andy and Emily returning evidence
+- Serena assembling outfits
+- Nigel questioning or rejecting one item
+- Serena revising it
+- final handoff to Miranda
+
+This should feel different from the polished customer UI.
+
+It should make it obvious that these are multiple collaborating agents rather than one chatbot pretending to be several agents.
+
+5. MIRANDA’S EDIT / YOUR LOOKS
+
+Create 2–3 polished complete outfit recommendations.
+
+For each look show:
+
+- strong fashion/product imagery
+- product names
+- retailer
+- price
+- availability
+- total outfit price
+- Miranda’s short rationale
+- Add Look to Cart
+- Refine This Look
+
+Use realistic mock product data for now.
+
+We will replace this with Moss results later.
+
+NAVIGATION
+
+Use:
+
+Your Stylist | The Fashion Desk | Behind the Curtain | Your Looks
+
+DESIGN PRINCIPLES
+
+- Mira Picks video is the primary visual reference.
+- Editorial fashion product, not enterprise dashboard.
+- Strong imagery.
+- Strong composition.
+- Preserve the playful movie-character fashion-desk concept.
+- Desktop-first for the hackathon presentation.
+- Judges should understand the concept within seconds.
+- Prioritize visual polish and a complete clickable journey.
+- Use mock data wherever needed.
+- Do not overengineer.
+- Do not build backend integrations yet.
+
+IMPLEMENTATION PROCESS
+
+1. First inspect the existing project, Mira Picks reference project, and Mira Picks video.
+
+2. Give me a VERY SHORT report containing:
+   - existing frontend stack
+   - visual elements from Mira Picks you will carry over
+   - files you plan to create/change
+
+Do not stop and wait for approval unless there is a genuine blocker.
+
+3. Immediately implement Phase 1.
+
+4. Run the application locally.
+
+5. Test the main navigation and customer journey.
+
+6. Give me:
+   - local URL
+   - files created/changed
+   - what is working
+   - any blockers
+
+Do not commit.
+Do not push.
+
+Focus on getting a beautiful working UI in front of me as quickly as possible.
+</pasted_content id="3978">
+
+---
+
+After implementation:
+
+1. Start the local development server yourself.
+2. Keep it running.
+3. Tell me the exact localhost URL to open in my browser.
+4. Verify that the page loads without errors.
+5. Click through and test only the critical demo path:
+   - Mira Picks → Flicsy intro
+   - Your Stylist
+   - Consult the Fashion Desk
+   - Fashion Desk agent progression
+   - Behind the Curtain
+   - Your Looks
+   - Add Look to Cart
+   - Refine This Look
+
+TIME CONSTRAINT:
+We are now in rapid hackathon execution mode. Move as quickly as possible.
+
+Do not run broad, exhaustive, or unnecessary tests.
+Do not spend time on refactoring, cleanup, edge cases, abstractions, or nonessential polish.
+Only test enough to confirm the critical demo flow works and the UI loads without obvious errors.
+
+If something noncritical is imperfect, leave it and report it rather than spending time fixing it.
+
+Do not stop after writing the code. I need a running application that I can inspect in my browser as soon as possible.
+
+---
+
+uv run python scripts/list_models.py
+
+---
+
+<pasted_content id="3978">
+We now have these ZooWork model assignments already present in `.env`:
+
+MIRANDA_MODEL
+ANDY_MODEL
+EMILY_MODEL
+SERENA_MODEL
+NIGEL_MODEL
+
+Do not modify `.env`.
+
+We are now integrating ZooWork, but DEMO SPEED AND RELIABILITY ARE CRITICAL.
+
+The existing UI is fast and working. Preserve it.
+
+GOAL:
+Create the five Flicsy characters as real ZooWork managed agents without making the demo fragile or unnecessarily slow.
+
+Agents:
+- Miranda — Lead Stylist
+- Andy — Fashion Editor
+- Emily — Social & Culture Editor
+- Serena — Personal Shopper
+- Nigel — Fashion Director / Critic
+
+Use each agent's model from its corresponding `.env` variable.
+
+IMPORTANT PERFORMANCE RULES:
+
+1. DO NOT create/start the five ZooWork agents on every styling request.
+   Create them once and reuse them.
+
+2. Persist their agent IDs locally in a small non-secret config/state file so subsequent runs can reuse existing agents rather than recreate them.
+
+3. Before creating an agent, check whether we already have a valid saved agent ID.
+
+4. Start/wait for agents only during setup, not during the customer-facing critical path whenever possible.
+
+5. Andy and Emily must run IN PARALLEL because their research tasks are independent.
+
+6. The critical execution order should be:
+
+   Miranda brief
+        ↓
+   Andy + Emily IN PARALLEL
+        ↓
+   Serena
+        ↓
+   Nigel
+        ↓
+   Miranda final
+
+7. Keep prompts concise and outputs compact. This is a hackathon demo, not a long-form analysis workflow.
+
+8. Preserve the existing mock data and current UI as FALLBACKS.
+   If ZooWork fails, times out, or becomes too slow, the demo must continue.
+
+9. Do not remove the existing "Skip to result" behavior.
+
+10. Keep the current UI structure unchanged.
+
+IMPLEMENTATION APPROACH:
+
+First create a setup script that:
+- reads the five model IDs from `.env`
+- creates the five ZooWork agents if they do not already exist
+- assigns each its role-specific system prompt
+- starts them
+- waits until they are running
+- saves the resulting agent IDs for reuse
+
+Then add the smallest backend abstraction needed to invoke those agents.
+
+For this step, DO NOT yet connect Tavily, Bright Data, Moss, Band, or Stripe.
+We first want to prove that the five ZooWork agents can run with their assigned models.
+
+TEST ONLY ONE MINIMAL END-TO-END AGENT RUN.
+
+Measure and report:
+- agent creation/setup time
+- Miranda latency
+- Andy latency
+- Emily latency
+- Andy + Emily parallel elapsed time
+- Serena latency
+- Nigel latency
+- final Miranda latency
+- total end-to-end elapsed time
+
+If total latency is substantially slower than the current demo, do not redesign anything. Report it so we can decide how much of the live pipeline should run during the presentation.
+
+Do not run broad tests.
+Do not refactor unrelated code.
+Do not commit.
+Do not push.
+
+Move quickly.
+
+At the end report only:
+- five agent IDs created/reused
+- model assigned to each
+- setup time
+- measured live-run latency
+- any errors
+</pasted_content id="3978">
+
+---
+
+<pasted_content id="3978">
+Phase 1 UI is accepted and the five ZooWork agents are already live.
+
+FREEZE THE UI.
+
+The five ZooWork agents already exist and their IDs are saved in:
+
+config/zoowork_agents.json
+
+DO NOT recreate them.
+
+The current app is running at:
+
+http://127.0.0.1:8010/
+
+TIME IS CRITICAL.
+Move quickly.
+Do not redesign the UI.
+Do not refactor unrelated code.
+Do not run broad tests.
+Do not commit.
+Do not push.
+
+==================================================
+NEXT GOAL: REAL BAND COORDINATION
+==================================================
+
+Turn the existing mocked "Behind the Curtain" view into a REAL Band-backed conversation between the five existing ZooWork agents.
+
+For this phase:
+
+- ZooWork agents are REAL.
+- Band coordination must be REAL.
+- Tavily evidence can remain mocked temporarily.
+- Bright Data evidence can remain mocked temporarily.
+- Moss retrieval can remain mocked / use the existing real Everlane pool temporarily.
+- Stripe remains untouched.
+
+We are proving multi-agent coordination first.
+
+==================================================
+UI SEPARATION — PRESERVE THIS
+==================================================
+
+THE FASHION DESK
+= what each specialist found or produced.
+
+Keep:
+- Andy's Press Desk
+- Emily's Clipping Book
+- Serena's Shopping Bag
+- Nigel's Notes
+- agent status/progression
+
+Do NOT turn this tab into chat.
+
+BEHIND THE CURTAIN
+= how the agents actually coordinate.
+
+This is where the REAL Band room appears:
+
+- @mentions
+- assignments
+- responses
+- disagreements
+- handoffs
+- revision requests
+- timestamps
+- final approval
+
+The two tabs should represent the SAME underlying run but different aspects of it.
+
+For this phase, the Fashion Desk evidence drawers may continue using existing fallback/demo evidence.
+
+==================================================
+BAND MUST BE FUNCTIONAL, NOT DECORATIVE
+==================================================
+
+Band must actually carry the handoffs.
+
+Do NOT:
+
+1. run all ZooWork agents independently
+2. collect their outputs
+3. merely copy those outputs into Band afterward
+
+Instead, the orchestration must depend on the Band conversation.
+
+A styling request should create or reuse one Band room.
+
+Use these handles:
+
+@miranda
+@andy
+@emily
+@serena
+@nigel
+
+The Band room should be the source of truth for the backstage workflow.
+
+Use the official Band API/SDK and official documentation.
+Do not invent Band API calls.
+
+Inspect the existing hackathon documentation and any Band setup already present in the repo.
+
+Use the BAND_API_KEY already present in `.env`.
+
+==================================================
+USE EXISTING ZOOWORK AGENTS
+==================================================
+
+Reuse the IDs in:
+
+config/zoowork_agents.json
+
+Do NOT create new agents.
+
+Models are already assigned:
+
+Miranda → MIRANDA_MODEL
+Andy → ANDY_MODEL
+Emily → EMILY_MODEL
+Serena → SERENA_MODEL
+Nigel → NIGEL_MODEL
+
+Keep ZooWork prompts concise.
+
+==================================================
+LIVE NEGOTIATION FLOW
+==================================================
+
+1. MIRANDA
+
+Take the completed customer brief from the existing UI.
+
+Miranda posts into Band:
+
+@andy Find an editorial direction for this gala. Blue is a preference, not an instruction. Nothing predictable.
+
+@emily Give me the social/cultural direction. What feels current without becoming trendy for its own sake?
+
+2. ANDY + EMILY
+
+Their ZooWork calls should run IN PARALLEL.
+
+Andy produces concise editorial direction.
+
+Emily produces concise social/cultural direction.
+
+Both outputs must be posted into the Band room under their identities.
+
+3. SERENA
+
+After both responses exist in Band, hand the combined context to Serena:
+
+@serena Build 2–3 complete looks using the customer brief plus Andy and Emily's direction.
+
+For this first phase, Serena may use the existing real Everlane product pool already present in the app.
+
+Do NOT wait for Moss yet.
+
+Serena posts candidate looks into Band and @mentions Nigel.
+
+4. NIGEL
+
+Nigel receives:
+
+- customer brief
+- Andy's direction
+- Emily's direction
+- Serena's candidate looks
+
+Nigel must genuinely critique the looks.
+
+He must NOT automatically approve everything.
+
+If something is weak, Nigel should explicitly @mention Serena with a concrete change request.
+
+Example:
+
+Look 1 works, but the shoe makes it ordinary.
+@serena replace it with something cleaner and less expected.
+
+5. SERENA REVISION
+
+If Nigel requests a change:
+
+Serena must perform a REAL second ZooWork turn.
+
+She posts a revised look/item into Band.
+
+This must NOT be hard-coded text.
+
+6. NIGEL FINAL REVIEW
+
+Nigel reviews the revision.
+
+Then:
+
+@nigel → @miranda
+
+with his recommendation.
+
+7. MIRANDA FINAL
+
+Miranda makes the final choice and posts her approval through Band.
+
+==================================================
+LIVE UI
+==================================================
+
+Replace the existing scripted Behind the Curtain timeline with actual Band room events.
+
+Show using the existing UI:
+
+- agent name
+- @handle
+- timestamp
+- message
+- @mentions
+- handoff
+- REQUEST CHANGE
+- revision
+- FINAL APPROVAL
+
+Do not redesign this page.
+
+Add only a small indicator such as:
+
+LIVE · BAND
+
+and optionally:
+
+Room: <room-id>
+
+Drive Fashion Desk agent states from the same live workflow where practical:
+
+waiting
+working
+complete
+change requested
+
+The UI should update progressively as Band messages arrive.
+
+Do NOT wait until the entire workflow finishes before displaying activity.
+
+==================================================
+DEMO SAFETY
+==================================================
+
+Preserve the existing scripted workflow as FALLBACK.
+
+If Band or ZooWork fails:
+
+- log the error
+- switch to the existing fallback sequence
+- keep the UI functioning
+- keep "Skip to result"
+
+The demo must never get stuck.
+
+==================================================
+PERFORMANCE
+==================================================
+
+The existing ZooWork-only live run took about 34.7 seconds.
+
+Do NOT add artificial delays.
+
+Andy + Emily must remain parallel.
+
+Measure the Band-backed workflow.
+
+A real Serena revision will add latency; that is acceptable for this one test.
+
+Keep outputs compact.
+
+==================================================
+MINIMUM TEST ONLY
+==================================================
+
+Run ONE complete styling request.
+
+Do not run a broad test suite.
+
+I want one real transcript approximately:
+
+Miranda → @Andy + @Emily
+Andy → editorial direction
+Emily → social direction
+Serena → candidate looks
+Nigel → critique / @Serena revision request
+Serena → revised look
+Nigel → @Miranda recommendation
+Miranda → final approval
+
+==================================================
+WHEN FINISHED REPORT ONLY
+==================================================
+
+1. Band room ID
+2. confirmation that existing ZooWork agent IDs were reused
+3. actual Band transcript
+4. whether Nigel caused a REAL Serena second turn
+5. total elapsed time
+6. files changed
+7. localhost URL
+8. status:
+   LIVE BAND
+   or
+   FALLBACK
+
+Do not commit.
+Do not push.
+
+Move as quickly as possible.
+</pasted_content id="3978">
+
+---
+
+<task-notification>
+<task-id>bt0lixno6</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bt0lixno6.output</output-file>
+<status>failed</status>
+<summary>Background command "Run the Flicsy app locally on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>blko6tqat</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\blko6tqat.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bx0cyjdzj</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bx0cyjdzj.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+flicsy it's running fine- stop running unnecessary tests - just complete the work and produce a report - time is of the essence
+
+---
+
+<pasted_content id="3978">
+The real ZooWork + Band coordination layer is now built.
+
+FREEZE:
+- the existing UI
+- the current Band orchestration
+- the five existing ZooWork agents
+- their model assignments
+- the existing fallback/rehearsal flow
+
+DO NOT recreate agents.
+DO NOT redesign screens.
+DO NOT refactor unrelated code.
+DO NOT run broad tests.
+DO NOT commit.
+DO NOT push.
+
+TIME IS OF THE ESSENCE.
+Move extremely quickly and do only work required for the demo.
+
+==================================================
+NEXT GOAL: REAL RESEARCH + REAL PRODUCT RETRIEVAL
+==================================================
+
+Replace the remaining mocked Fashion Desk evidence with real data:
+
+ANDY  → Tavily
+EMILY → Bright Data / existing Mira Picks TikTok evidence
+SERENA → Moss
+
+Nigel and Miranda then reason over those REAL outputs through the existing Band workflow.
+
+The architecture should remain:
+
+Customer brief
+      ↓
+Miranda
+      ↓
+Andy + Emily IN PARALLEL
+Tavily     Bright Data
+      ↓
+Serena
+Moss real products
+      ↓
+Nigel critique
+      ↓
+Serena revision if requested
+      ↓
+Nigel
+      ↓
+Miranda final selection
+
+The existing Band room remains the coordination backbone.
+
+==================================================
+IMPORTANT UI SEPARATION
+==================================================
+
+THE FASHION DESK
+shows WHAT each specialist found:
+
+- Andy’s Press Desk → real Tavily evidence
+- Emily’s Clipping Book → real Bright Data/TikTok evidence
+- Serena’s Shopping Bag → real Moss products
+- Nigel’s Notes → critique based on those real results
+
+BEHIND THE CURTAIN
+continues to show HOW the agents coordinate:
+
+- Band messages
+- @mentions
+- assignments
+- tool activity
+- disagreements
+- revision requests
+- final approval
+
+Do not merge these two views.
+
+They should reflect the SAME live run.
+
+==================================================
+1. ANDY → TAVILY
+==================================================
+
+Andy is the Fashion Editor.
+
+Question:
+“What does the fashion establishment suggest?”
+
+Use the existing Tavily installation/configuration already available in this project.
+
+Do not ask me to configure Tavily again unless genuinely blocked.
+
+Given Miranda’s styling brief, Andy should make a small, targeted real search across fashion/editorial sources.
+
+Search for evidence relevant to the client’s actual request, for example:
+
+- current formal/evening dressing
+- tailoring
+- saturated/deep blue
+- unconventional black-tie dressing
+- formal flats / low heels
+- relevant runway/editorial direction
+
+Do NOT do broad research.
+
+Return only 2–4 strong sources.
+
+Normalize the result approximately as:
+
+{
+  "direction": "concise editorial direction",
+  "sources": [
+    {
+      "title": "...",
+      "publication": "...",
+      "url": "...",
+      "insight": "why this matters for this client"
+    }
+  ]
+}
+
+CRITICAL:
+- Sources and URLs must be REAL.
+- Never invent an article, publication, headline, or URL.
+- If Tavily fails, use the existing fallback evidence and mark it FALLBACK.
+
+Feed Andy’s REAL summarized output into Band for Serena and Nigel.
+
+Populate the existing Andy’s Press Desk drawer with these real sources.
+
+Show actual clickable URLs where the current UI allows it.
+
+==================================================
+2. EMILY → BRIGHT DATA
+==================================================
+
+Emily is Social & Culture Editor.
+
+Question:
+“What are people actually wearing and talking about?”
+
+FIRST inspect the Mira Picks reference project.
+
+Do not rebuild the Bright Data integration.
+
+Find and reuse the existing implementation by searching for:
+
+- gd_m7n5ixlw1gc4no56kx
+- BRIGHTDATA
+- BRIGHT_DATA
+- tiktok_clipbook
+- tiktok_clipbook.jsonl
+- snapshot
+- trigger
+- poll
+- download
+- TikTok
+
+The Bright Data credentials and dataset configuration are already in Flicsy `.env`.
+
+Do not modify or print secrets.
+
+DEMO PERFORMANCE IS CRITICAL:
+
+Prefer the EXISTING PRE-COLLECTED MIRA PICKS TIKTOK CLIPPING BOOK for the critical customer flow.
+
+That is real Bright Data-collected evidence and avoids waiting for a long TikTok scrape.
+
+If a fast live Bright Data refresh can be added trivially, make it OPTIONAL and non-blocking.
+
+Do NOT put a slow live scrape into the main demo path.
+
+Emily should query the real clipping-book data for evidence relevant to the styling brief.
+
+Return a compact structure such as:
+
+{
+  "signals": [
+    {
+      "trend": "...",
+      "evidence": "...",
+      "source": "...",
+      "url": "..."
+    }
+  ]
+}
+
+Return only a few strong pieces of evidence.
+
+CRITICAL:
+- Do not invent TikTok evidence.
+- Use actual records from the Bright Data/Mira Picks dataset.
+- If there is no relevant evidence, say so rather than fabricate it.
+- If Bright Data data is unavailable, use the current fallback and mark it FALLBACK.
+
+Feed Emily’s real summarized evidence into Band.
+
+Populate the existing Emily’s Clipping Book drawer from the same real data.
+
+==================================================
+3. SERENA → MOSS
+==================================================
+
+Serena is the Personal Shopper.
+
+Question:
+“What can the client actually buy?”
+
+Use the Moss credentials/configuration already in `.env`.
+
+Expected existing index:
+
+everlane-com
+
+Do NOT rebuild or re-index the catalog unless absolutely necessary.
+
+Do NOT use the current hard-coded product selection as the primary live path.
+
+Serena receives:
+
+- Miranda’s brief
+- Andy’s real Tavily direction
+- Emily’s real social/cultural evidence
+
+Use those inputs to create a concise semantic Moss query.
+
+Search Moss for real purchasable products.
+
+Retrieve whatever real fields Moss provides, especially:
+
+- product name
+- retailer
+- price
+- sale price if present
+- image
+- product URL
+- availability / stock if present
+- relevant product/category text
+
+Use those actual retrieved products to build 2–3 coherent candidate looks.
+
+Do not invent products.
+
+Then Serena posts those actual candidates into Band and @mentions Nigel.
+
+Preserve the existing Everlane product pool as FALLBACK if Moss fails.
+
+==================================================
+4. NIGEL
+==================================================
+
+Nigel does NOT need another search tool.
+
+He receives:
+
+- customer brief
+- Andy’s REAL Tavily evidence
+- Emily’s REAL Bright Data evidence
+- Serena’s REAL Moss product candidates
+
+Nigel critiques the actual proposed looks.
+
+He should evaluate:
+
+- occasion
+- coherence
+- fashion direction
+- budget
+- footwear constraints
+- whether the look actually answers the customer
+- whether Serena used the evidence intelligently
+
+He may request a substitution.
+
+If he does:
+
+@serena must perform a real second ZooWork turn.
+
+For that revision, Serena should use Moss again when practical.
+
+Do not hard-code the revision.
+
+==================================================
+5. MIRANDA
+==================================================
+
+Miranda receives Nigel’s final recommendation through Band.
+
+She chooses the final 1–3 looks.
+
+Her final output must reference the REAL products selected by Serena.
+
+==================================================
+LIVE UI DATA
+==================================================
+
+Fix the current known gaps:
+
+1. Andy’s Press Desk should show live Tavily results.
+
+2. Emily’s Clipping Book should show actual Bright Data/Mira Picks evidence.
+
+3. Serena’s Shopping Bag should show the actual Moss products returned during THIS live run.
+
+4. Nigel’s Notes should reflect his actual live critique.
+
+5. Your Looks must stop showing the scripted products when LIVE mode succeeds.
+
+In LIVE mode, populate Your Looks from:
+Serena live products → Nigel critique/revision → Miranda final decision.
+
+The final product cards should use actual:
+
+- image
+- product name
+- retailer
+- price
+- availability if available
+- URL
+- total look price
+
+Do NOT redesign Your Looks.
+
+Just replace the data source.
+
+==================================================
+BAND
+==================================================
+
+Keep the existing Band workflow.
+
+The Band conversation should now naturally contain messages derived from the real evidence.
+
+Where useful, Behind the Curtain may show actual tool activity labels:
+
+tavily.search
+brightdata.clipbook.query
+moss.search
+
+These must correspond to REAL tool activity when LIVE mode succeeds.
+
+Do not fabricate tool-call blocks.
+
+==================================================
+PERFORMANCE
+==================================================
+
+Andy and Emily MUST remain parallel.
+
+Do not introduce artificial waits.
+
+Keep all research outputs short.
+
+Do not retrieve dozens of Tavily sources.
+Do not load the entire Bright Data corpus into an LLM.
+Do not request huge Moss result sets.
+
+Use only enough evidence/products to make the decision.
+
+Preserve Skip to result.
+
+Preserve all existing fallbacks.
+
+If an external service fails or times out:
+- log the error
+- mark that source FALLBACK
+- continue the workflow
+- never leave the UI stuck
+
+Do not spend time optimizing beyond what is required for a reliable demo.
+
+==================================================
+TESTING — MINIMUM ONLY
+==================================================
+
+Do not run broad test suites.
+
+First make ONE minimal real call against each integration:
+
+- Tavily
+- Bright Data / clipping book
+- Moss
+
+Then run at most ONE integrated customer flow if the three adapters are working.
+
+Do not repeatedly run the 60-second workflow.
+
+Keep the server running.
+
+==================================================
+WHEN FINISHED REPORT ONLY
+==================================================
+
+TAVILY
+- LIVE / FALLBACK / BLOCKED
+- one actual source title + URL
+
+BRIGHT DATA
+- LIVE / CLIPBOOK / FALLBACK / BLOCKED
+- one actual TikTok/social evidence record
+- whether critical path uses local clipping book or live retrieval
+
+MOSS
+- LIVE / FALLBACK / BLOCKED
+- one actual retrieved product with name, price and URL
+
+BAND
+- confirmation that the SAME existing Band workflow consumed these real outputs
+
+UI
+- whether Press Desk is live
+- whether Clipping Book is live
+- whether Shopping Bag is live
+- whether Your Looks is live
+
+PERFORMANCE
+- integrated run time, only if you ran one
+
+FILES
+- files changed
+
+URL
+- localhost URL
+
+Do not commit.
+Do not push.
+
+Move immediately and do no unnecessary work.
+</pasted_content id="3978">
+
+---
+
+<task-notification>
+<task-id>b3zjr9hl6</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\b3zjr9hl6.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>byc6givlo</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\byc6givlo.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<pasted_content id="3978">
+Make ONE small visual adjustment only.
+
+In the "Behind the Curtain" / Band conversation view:
+
+- Increase the agent portrait/avatar size to approximately 2× the current size.
+- Keep the portraits circular and preserve aspect ratio.
+- Adjust the surrounding spacing/alignment only as much as necessary so the larger portraits do not overlap text.
+- Keep message text, timestamps, colors, tool-call blocks, @mentions, left sidebar, layout, and all behavior unchanged.
+
+Do NOT redesign anything else.
+Do NOT refactor.
+Do NOT touch backend logic.
+Do NOT run broad tests.
+Do NOT commit.
+Do NOT push.
+
+Make the CSS change, reload the current UI, verify the Band conversation still renders correctly, and report only:
+- file changed
+- old avatar size
+- new avatar size
+- localhost URL
+
+Move immediately and keep this surgical.
+</pasted_content id="3978">
+
+---
+
+<pasted_content id="3978">
+The Flicsy cart UI is already complete and visually accepted.
+
+FINAL COMMERCE STEP: connect the existing Checkout button to REAL Stripe TEST-MODE Checkout.
+
+TIME IS CRITICAL.
+
+Do not redesign anything.
+Do not refactor unrelated code.
+Do not run broad tests.
+Do not change the cart UI except what is required for checkout.
+Do not commit.
+Do not push.
+
+==================================================
+CURRENT STATE
+==================================================
+
+The existing Your Bag drawer already contains:
+
+- real selected products
+- product names
+- images
+- prices
+- total
+- Checkout button
+
+Currently Checkout only displays:
+
+"Stripe test-mode checkout connects in Phase 2 — nothing was charged."
+
+Replace that placeholder behavior with an actual Stripe test Checkout Session.
+
+Stripe TEST credentials are already in `.env`.
+
+Expected variables:
+
+STRIPE_PUBLISHABLE_KEY
+STRIPE_SECRET_KEY
+
+Do not print or expose either key.
+
+The secret key must remain backend-only.
+
+==================================================
+GOAL
+==================================================
+
+Clicking CHECKOUT should:
+
+1. Send the current bag contents to the FastAPI backend.
+2. Backend creates a Stripe Checkout Session in TEST MODE.
+3. Each current bag item becomes a Stripe line item using:
+   - product name
+   - unit price
+   - quantity = 1
+
+4. Redirect the browser to the Stripe-hosted test checkout page.
+5. Customer can complete a test payment.
+6. Stripe returns to Flicsy with a clear success state.
+
+This is a commerce-flow demonstration only.
+
+Do NOT imply that Everlane or another retailer receives an actual order.
+
+==================================================
+IMPLEMENTATION
+==================================================
+
+Use the official Stripe Python SDK if it is not already installed.
+
+Add only the minimum backend endpoint necessary, for example:
+
+POST /api/checkout
+
+Input should contain only the current cart items needed for checkout.
+
+IMPORTANT:
+Do not trust a client-supplied total blindly.
+
+Validate/reconstruct the amount from the cart item prices already represented by the application before creating the Stripe Session.
+
+Use Stripe Checkout Sessions.
+
+Use dynamic line items rather than creating permanent Stripe Products unless there is a compelling reason not to.
+
+Set currency to USD.
+
+Use localhost return URLs appropriate for the currently running app:
+
+http://127.0.0.1:8010/
+
+A simple pattern is acceptable:
+
+success_url:
+http://127.0.0.1:8010/?checkout=success
+
+cancel_url:
+http://127.0.0.1:8010/?checkout=cancelled
+
+On success, show a concise message in the existing Flicsy UI such as:
+
+PAYMENT COMPLETE · STRIPE TEST MODE
+
+"This was a test transaction. No retailer order was placed."
+
+On cancellation, simply restore the existing bag.
+
+Do not build webhooks, fulfillment, accounts, tax logic, shipping infrastructure, inventory synchronization, or production payment handling.
+
+We only need a convincing test-mode checkout for the hackathon.
+
+==================================================
+DEMO SAFETY
+==================================================
+
+If Stripe Session creation fails:
+
+- do not break the UI
+- keep the bag intact
+- show a concise error
+- log the backend error without exposing credentials
+
+Keep the current placeholder/fallback behavior available if Stripe is unavailable.
+
+==================================================
+TESTING
+==================================================
+
+Do ONE checkout smoke test only.
+
+Verify:
+
+1. bag contains current products
+2. Checkout calls backend
+3. Stripe-hosted TEST checkout page opens
+4. displayed Stripe amount equals the Flicsy bag total
+5. a Stripe test payment succeeds
+6. browser returns to Flicsy success state
+
+Do not run broad tests.
+
+Keep the Flicsy server running.
+
+==================================================
+WHEN FINISHED REPORT ONLY
+==================================================
+
+STRIPE: LIVE TEST MODE / FALLBACK / BLOCKED
+
+- backend endpoint added
+- test Checkout Session created successfully: yes/no
+- checkout total used
+- success redirect works: yes/no
+- files changed
+- localhost URL
+
+Do not commit.
+Do not push.
+
+Move immediately and keep this implementation minimal.
+</pasted_content id="3978">
+
+---
+
+<task-notification>
+<task-id>bf0rb5843</task-id>
+<tool-use-id>toolu_014VSC1VtadGuWNWfRVZaLJz</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bf0rb5843.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bmafqhyo7</task-id>
+<tool-use-id>toolu_01D21wjRggCeUofUtWYeMKZ8</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bmafqhyo7.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<pasted_content id="3978">
+URGENT BUG FIX ONLY.
+
+The current deployed/local Flicsy UI has a blocking bug:
+
+In "Your Stylist", the SEND button does not work.
+
+Do not redesign anything.
+Do not refactor unrelated code.
+Do not touch Band, ZooWork, Tavily, Bright Data, Moss, Stripe, or deployment logic unless this bug directly requires it.
+Do not run broad tests.
+Do not commit.
+Do not push.
+
+TIME IS CRITICAL.
+
+GOAL:
+Make the existing SEND button work again so the user can submit the current text input to Miranda and continue the existing conversation flow.
+
+Please inspect only the relevant frontend code, likely:
+- app/static/app.js
+- app/static/index.html
+- any directly related event-binding code
+
+Check specifically for:
+- missing or broken click listener
+- DOM element ID/class mismatch
+- event handler overwritten during recent live-data changes
+- disabled state logic
+- JavaScript exception preventing handler registration
+- form submit / preventDefault issue
+- stale selector after UI changes
+
+Do the smallest possible fix.
+
+TEST ONLY THIS PATH:
+
+1. Open http://127.0.0.1:8010/
+2. Go to Your Stylist
+3. Enter or use the existing styling request
+4. Click SEND
+5. Confirm Miranda receives/displays the message and the existing conversation proceeds
+
+Also verify the quick-reply chips still work.
+
+Do not run the full 60–75 second agent workflow.
+
+When fixed, report only:
+- root cause
+- file changed
+- exact fix
+- SEND works: yes/no
+- localhost URL
+
+Move immediately.
+</pasted_content id="3978">
+
+---
+
+never mind - it works
+
+---
+
+<pasted_content id="3978">
+URGENT: fix only Emily's Clipping Book retrieval quality.
+
+The UI/design is accepted. Do NOT redesign anything.
+
+The current Clipping Book is returning weak and irrelevant TikTok evidence because the query appears to be matching generic words from the entire customer/agent brief.
+
+Example current matched terms include:
+
+always, angeles, anti, black, blue, brief, chasing, client, conventional, cultural, current...
+
+This is causing irrelevant results such as:
+- a generic H&M company-description clip
+- broad Y2K/Gen-Z commentary
+- a Steve Jobs uniform quote
+
+The problem is RETRIEVAL/RANKING, not the UI.
+
+TIME IS CRITICAL.
+Make the smallest possible fix.
+
+==================================================
+GOAL
+==================================================
+
+Emily should retrieve only TikTok clips that are genuinely useful for the customer's styling decision.
+
+Before querying the local Bright Data clipping book, derive a concise set of FASHION-SPECIFIC concepts from Miranda's styling brief.
+
+For the current gala example, useful concepts would include things like:
+
+- black tie eveningwear
+- gala dressing
+- formal tailoring
+- cobalt / deep blue eveningwear
+- sculptural tailoring
+- formal flats
+- low heels for evening
+- romantic lace
+- unconventional formal dressing
+- modern evening silhouettes
+
+Do NOT use generic conversational words such as:
+
+client
+brief
+current
+cultural
+always
+conventional
+angeles
+chasing
+etc.
+
+==================================================
+RANKING
+==================================================
+
+Improve the existing local clipping-book search/ranking with minimal changes.
+
+Prefer matches in:
+
+1. caption/text
+2. hashtags
+3. fashion/category metadata if available
+
+Weight:
+- exact fashion phrases strongly
+- relevant fashion hashtags strongly
+- recent posts moderately
+- engagement only after relevance
+
+Do NOT allow a high-play-count irrelevant clip to outrank a lower-play-count highly relevant fashion clip.
+
+==================================================
+QUALITY THRESHOLD
+==================================================
+
+Return only genuinely relevant evidence.
+
+If only 2 good clips exist, show 2.
+
+Do NOT fill four cards just to fill the UI.
+
+If no strong evidence exists, Emily should honestly say:
+
+"Social evidence is limited for this brief."
+
+Do not fabricate trends or clips.
+
+==================================================
+EMILY SYNTHESIS
+==================================================
+
+Emily's summary must be grounded in the clips actually shown.
+
+The trend labels above the cards must correspond to the retrieved evidence.
+
+Do not generate sophisticated trend labels that are unsupported by the displayed clips.
+
+==================================================
+TEST ONLY THIS
+==================================================
+
+Run one clipping-book query using the current gala brief.
+
+Show me:
+
+1. generated fashion-specific search terms
+2. top returned clips with relevance scores
+3. which clips were rejected as irrelevant
+4. final clips shown in Emily's Clipping Book
+5. Emily's grounded synthesis
+
+Do not run the full Band/ZooWork workflow.
+Do not run broad tests.
+Do not touch Tavily, Moss, Stripe, Band, ZooWork, or UI layout.
+Do not commit.
+Do not push.
+
+Move immediately.
+</pasted_content id="3978">
+
+---
+
+<task-notification>
+<task-id>bpbqwgwy8</task-id>
+<tool-use-id>toolu_01CtV8Jcacre8W6mFTQ8TXXx</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bpbqwgwy8.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>b0u1ujpzs</task-id>
+<tool-use-id>toolu_01BvU1C6ug4JK2pnC1nZdVEq</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\b0u1ujpzs.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
