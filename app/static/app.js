@@ -5,7 +5,18 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const money = (n) => `$${n.toLocaleString("en-US")}`;
-const lookTotal = (items) => items.reduce((t, k) => t + PRODUCTS[k].price, 0);
+let P = PRODUCTS, L = LOOKS;  // live run data replaces these when the live desk succeeds
+const lookTotal = (items) => items.reduce((t, k) => t + P[k].price, 0);
+function useData() {
+  const ev = state.run?.live && state.run.data?.evidence;
+  if (ev && ev.final?.length) {
+    P = Object.fromEntries(Object.entries(ev.products).map(([k, p]) => [k, { ...p, color: p.color || "", stock: p.stock || "Listed on everlane.com" }]));
+    const notes = ev.notes || [];
+    L = ev.final.map((l, i) => ({ id: ["I", "II", "III"][i], title: l.name, items: l.items, alt: l.alt, rationale: l.rationale || l.why,
+      hero: (P[l.items.find((k) => (P[k].source || "").startsWith("Moss"))] || P[l.items[0]]).img,
+      nigel: (notes[notes.length - 1] || "").replace(/^@\w+\s*/, "").slice(0, 160) }));
+  } else { P = PRODUCTS; L = LOOKS; }
+}
 
 const DEMO_REQUEST = "I’m going to a gala dinner in San Francisco next month. I love skiing, I wear a lot of blue, and I’d like something elegant but not conventional.";
 const DEFAULT_BRIEF = { occasion: "Gala dinner", city: "San Francisco", when: "Next month", palette: "Blue, always",
@@ -24,6 +35,7 @@ function route() {
   const h = location.hash;
   const view = h.startsWith("#/") ? h.slice(2) : "";
   const inApp = VIEWS.includes(view);
+  closeBag();  // never leave the bag's scrim covering a newly opened view
   $("#view-intro").hidden = inApp;
   $("#app-shell").hidden = !inApp;
   if (!inApp) { if (h === "#/" || h === "") window.scrollTo({ top: 0, behavior: "instant" }); return; }
@@ -186,13 +198,80 @@ function initStylist() {
 }
 
 function consult() {
-  startRun({ ...DEFAULT_BRIEF, ...state.brief });
+  startLive({ ...DEFAULT_BRIEF, ...state.brief });
   location.hash = "#/desk";
+}
+
+/* ====================== Live run: real ZooWork agents coordinating in a real Band room ====================== */
+const LIVE_TIMEOUT_MS = 150000;
+async function startLive(brief) {
+  if (state.run) { state.run.timers.forEach(clearTimeout); clearInterval(state.run.poll); }
+  const { photo, ...briefNoPhoto } = brief;
+  const run = { brief, start: Date.now(), timers: [], stages: {}, room: [], reveals: new Set(), bag: null, done: false, live: { id: null, room: null } };
+  STAGES.forEach((s) => (run.stages[s.id] = { state: "waiting", line: "Waiting" }));
+  state.run = run;
+  $("#skip-btn").hidden = false;
+  $("#play-btn").textContent = "Replay run";
+  refresh();
+  const fallback = (why) => {
+    console.error("Live desk unavailable, switching to rehearsal run:", why);
+    clearInterval(run.poll);
+    if (state.run !== run) return;
+    toast("Live desk unavailable — showing the rehearsal run.");
+    startRun(brief);
+  };
+  try {
+    const r = await fetch("/api/live/runs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(briefNoPhoto) });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    run.live.id = (await r.json()).run_id;
+  } catch (e) { return fallback(e); }
+  let misses = 0;
+  run.poll = setInterval(async () => {
+    if (state.run !== run) return clearInterval(run.poll);
+    if (Date.now() - run.start > LIVE_TIMEOUT_MS) return fallback("timeout");
+    try {
+      const r = await fetch(`/api/live/runs/${run.live.id}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      applyLive(run, await r.json());
+      misses = 0;
+    } catch (e) { if (e.fatal || ++misses >= 3) fallback(e); }
+  }, 1000);
+}
+
+function applyLive(run, d) {
+  if (d.status === "error") throw Object.assign(new Error(d.error), { fatal: true });
+  run.live.room = d.room_id;
+  for (const s of STAGES) {
+    const st = d.stages[s.id];
+    if (st) run.stages[s.id] = { state: st, line: d.lines[s.id] || run.stages[s.id].line };
+  }
+  const done = (id) => d.stages[id] === "done";
+  const before = new Set(run.reveals);
+  if (done("andy")) run.reveals.add("press");
+  if (done("emily")) run.reveals.add("clips");
+  if (d.events.some((e) => e.from === "serena")) run.bag = "draft";
+  if (d.events.some((e) => e.kind === "revision")) run.bag = "revised";
+  if (done("nigel")) run.reveals.add("notes");
+  if (done("final")) run.reveals.add("verdict");
+  run.data = d;
+  const tools = (d.tools || []).map((t) => ({ kind: "tool", from: t.from, tool: t.tool, args: t.args, result: t.result, ts: t.at }));
+  run.room = [...tools, ...d.events.map((e) => {
+    const to = (e.text.match(/^@(\w+)/) || [])[1];
+    const kind = { reject: "reject", approve: "approve", revision: "revision" }[e.kind] || "";
+    return { from: e.from, text: e.text, kind, ts: e.at, mentions: to ? [to] : [], handoff: !!to && !kind && e.from !== "client" };
+  })].sort((a, b) => new Date(a.ts) - new Date(b.ts));
+  if (d.status === "done") { run.done = true; clearInterval(run.poll); $("#skip-btn").hidden = true; }
+  refresh([...run.reveals].find((x) => !before.has(x)));
+}
+
+function refresh(fresh) {
+  renderDesk(fresh);
+  if (!$("#view-curtain").hidden) renderRoom();
 }
 
 /* ====================== Run engine (drives Desk + Curtain) ====================== */
 function startRun(brief) {
-  if (state.run) state.run.timers.forEach(clearTimeout);
+  if (state.run) { state.run.timers.forEach(clearTimeout); clearInterval(state.run.poll); }
   const run = { brief, start: Date.now(), timers: [], stages: {}, room: [], reveals: new Set(), bag: null, done: false };
   STAGES.forEach((s) => (run.stages[s.id] = { state: "waiting", line: "Waiting" }));
   state.run = run;
@@ -223,6 +302,7 @@ function apply(ev, i) {
 }
 
 function skipRun() {
+  if (state.run?.live) startRun(state.run.brief);  // leave the live room; jump to the rehearsal result
   const run = state.run;
   if (!run) return;
   run.timers.forEach(clearTimeout);
@@ -256,12 +336,47 @@ function renderDesk(fresh) {
       <div class="d-body">${ready ? body : `<p class="locked">${waitingFor} hasn't reported yet.</p>`}</div></details>`;
 
   const bagReady = run && run.bag;
+  const ev = run?.live && run.data?.evidence;
   $("#drawers").innerHTML =
-    drawer("press", "Andy's Press Desk", "5 publications · dynamically selected per brief", R.has("press"), pressBody(), "Andy") +
-    drawer("clips", "Emily's Clipping Book", CLIPS.stats, R.has("clips"), clipsBody(), "Emily") +
-    drawer("bag", "Serena's Shopping Bag", "Everlane catalog · 1,500 products indexed", bagReady, bagReady ? bagBody(run.bag) : "", "Serena") +
-    drawer("notes", "Nigel's Notes", "Occasion · budget · fit · evidence", R.has("notes"), notesBody(), "Nigel") +
+    drawer("press", "Andy's Press Desk", ev?.press ? `${ev.press.sources.length} real sources · Tavily · ${ev.press.status}` : "5 publications · dynamically selected per brief", R.has("press"), ev?.press ? livePress(ev.press) : pressBody(), "Andy") +
+    drawer("clips", "Emily's Clipping Book", ev?.clips ? `${ev.clips.matched} of ${ev.clips.searched} real TikTok clips · Bright Data · ${ev.clips.status}` : CLIPS.stats, R.has("clips"), ev?.clips ? liveClips(ev.clips) : clipsBody(), "Emily") +
+    drawer("bag", "Serena's Shopping Bag", ev?.looks?.length ? `Real products · Moss ${ev.moss?.[0]?.status || ""} + Everlane catalog` : "Everlane catalog · 1,500 products indexed", bagReady, ev?.looks?.length ? liveBag(ev) : bagReady ? bagBody(run.bag) : "", "Serena") +
+    drawer("notes", "Nigel's Notes", "Occasion · budget · fit · evidence", R.has("notes"), ev?.notes?.length ? liveNotes(ev) : notesBody(), "Nigel") +
     (R.has("verdict") ? verdictCard() : "");
+}
+
+function livePress(p) {
+  return `<p class="d-note">${p.status === "LIVE" ? "Live Tavily search" : "FALLBACK — Tavily unavailable"} · query: “${esc(p.query)}”</p><div class="press-grid"><div>${p.sources.map((s) =>
+    `<div class="src"><b>${esc(s.publication)}</b><span><a class="link" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a>${s.insight ? `<br><small style="color:var(--muted);letter-spacing:0;text-transform:none;font-weight:400">${esc(s.insight)}</small>` : ""}</span><small>Read</small></div>`).join("")}</div>
+    <div><span class="label">Andy's direction</span><div class="signal"><i>Editorial</i>${esc(p.direction || "")}</div></div></div>`;
+}
+
+function liveClips(c) {
+  if (!c.clips.length) return `<p class="d-note">No relevant clips in the clipping book (${c.status}).</p>`;
+  return `<p class="d-note">${c.status === "CLIPBOOK" ? "Real TikTok posts collected by Mira Picks via Bright Data" : "FALLBACK"} · matched on: ${esc((c.terms || []).join(", "))}</p>
+    <div class="tags">${[...new Set(c.clips.map((x) => x.trend).filter(Boolean))].map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+    <div class="clip-grid">${c.clips.slice(0, 4).map((x, i) => `<a class="clip" href="${esc(x.url)}" target="_blank" rel="noopener" style="background:linear-gradient(160deg, ${["#2a3550", "#8fb3ff", "#2f5cc4", "#1b1f2a"][i]}, #111)">
+      <p>${esc(x.text)}</p><small>@${esc(x.creator || "")} · ${esc(x.date)} · ${x.tags.map((t) => "#" + esc(t)).join(" ")}</small><b>▶ ${(x.plays || 0).toLocaleString("en-US")} plays</b></a>`).join("")}</div>
+    <p class="d-note">${esc(c.say || "")}</p>`;
+}
+
+function liveBag(ev) {
+  const P2 = ev.products;
+  return `<div class="bag-looks">${ev.looks.map((l, i) => {
+    const draft = ev.draft[i] || l;
+    const removed = draft.items.filter((k) => !l.items.includes(k));
+    const rows = [...removed.map((k) => [k, "struck"]), ...l.items.map((k) => [k, draft.items.includes(k) ? "" : "swapped"])];
+    return `<div class="bag-look"><h4>${esc(l.name)}<span>${money(l.total)}</span></h4>${rows.map(([k, cls]) => {
+      const p = P2[k];
+      return `<div class="mini ${cls}"><img src="${esc(p.img)}" alt=""><div><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)}</a><small>${esc(p.source || p.retailer)}${p.color ? " · " + esc(p.color) : ""}</small></div><b>${money(p.price)}</b></div>`;
+    }).join("")}</div>`;
+  }).join("")}</div>`;
+}
+
+function liveNotes(ev) {
+  return `<div class="notes-grid"><div><span class="label">Nigel, live</span>${ev.notes.map((n, i) =>
+    `<div class="nigel-q ${i === 0 ? "reject" : ""}"><i>${i === 0 ? "First review · change requested" : "After Serena's revision"}</i>“${esc(n.replace(/@\[\[[^\]]+\]\]\s*/g, ""))}”</div>`).join("")}</div>
+    <div><span class="label">Revision</span>${ev.revision ? `<div class="nigel-q"><i>${esc(ev.revision.replaces)}</i>${esc(ev.revision.changed)}</div>` : `<p class="locked">No revision.</p>`}</div></div>`;
 }
 
 function pressBody() {
@@ -316,23 +431,27 @@ function renderRoom() {
   $("#seats").innerHTML = Object.entries(AGENTS).map(([k, a]) =>
     `<li class="seat"><img src="${a.img}" alt=""><div><code>${a.handle}</code><small>${a.role}${a.tool ? " · " + a.tool : ""}</small></div><span class="st ${seatState(k)}"></span></li>`).join("");
   const live = $("#room-live");
-  live.textContent = !run ? "idle" : run.done ? "run complete" : "live";
+  live.textContent = !run ? "idle" : run.live ? (run.done ? "LIVE · BAND · complete" : "LIVE · BAND") : run.done ? "rehearsal · complete" : "rehearsal";
   live.classList.toggle("on", !!run && !run.done);
   if (!run) return;
   const b = run.brief;
-  $("#room-name").textContent = `#flicsy-${b.occasion.toLowerCase().replace(/\W+/g, "-")}-${b.city.toLowerCase().replace(/\W+/g, "-")}`.replace(/-+/g, "-");
-  const fmt = (at) => new Date(run.start + at).toLocaleTimeString("en-GB");
+  $("#room-name").textContent = run.live?.room ? `Room: ${run.live.room}`
+    : `#flicsy-${b.occasion.toLowerCase().replace(/\W+/g, "-")}-${b.city.toLowerCase().replace(/\W+/g, "-")}`.replace(/-+/g, "-");
+  $(".room-meta").innerHTML = run.live ? "Real Band room · 5 ZooWork agents<br>Every handoff is a Band @mention" : "Rehearsal room · scripted fallback";
+  const fmtAt = (at) => new Date(run.start + at).toLocaleTimeString("en-GB");
+  const fmt = (at, ts) => (ts ? new Date(ts).toLocaleTimeString("en-GB") : fmtAt(at));
   const mention = (t) => esc(t).replace(/@(\w+)/g, '<span class="m">@$1</span>');
   $("#feed").innerHTML = run.room.map((m) => {
-    if (m.kind === "system") return `<li class="ev system"><time>${fmt(m.at)}</time><div class="txt">— ${esc(m.text)} —</div></li>`;
-    const a = AGENTS[m.from] || { name: "You", img: "", handle: "@client" };
+    if (m.kind === "system") return `<li class="ev system"><time>${fmt(m.at, m.ts)}</time><div class="txt">— ${esc(m.text)} —</div></li>`;
+    const a = AGENTS[m.from] || { name: "Client brief", img: "", handle: "@client" };
     const avatar = a.img ? `<img src="${a.img}" alt="">` : `<span></span>`;
     let body;
     if (m.kind === "tool") body = `<div class="toolcall"><b>${esc(m.tool)}</b>(${esc(m.args)})<span class="res">→ ${esc(m.result)}</span></div>`;
     else if (m.kind === "reject") body = `<div class="txt"><div class="tagx">REQUEST CHANGE</div>${mention(m.text)}</div>`;
     else if (m.kind === "approve") body = `<div class="txt"><div class="tagx">FINAL APPROVAL</div>${mention(m.text)}</div>`;
+    else if (m.kind === "revision") body = `<div class="txt"><div class="tagx">REVISION</div>${mention(m.text)}</div><span class="handoff">↳ handoff → @nigel</span>`;
     else body = `<div class="txt">${mention(m.text)}</div>${m.handoff ? `<span class="handoff">↳ handoff → @${esc(m.mentions[0])}</span>` : ""}`;
-    return `<li class="ev ${m.kind || ""}"><time>${fmt(m.at)}</time>${avatar}<div><div class="who">${a.name}<code>${a.handle}</code></div>${body}</div></li>`;
+    return `<li class="ev ${m.kind || ""}"><time>${fmt(m.at, m.ts)}</time>${avatar}<div><div class="who">${a.name}<code>${a.handle}</code></div>${body}</div></li>`;
   }).join("");
   const feed = $("#feed");
   feed.scrollTop = feed.scrollHeight;
@@ -342,7 +461,8 @@ function renderRoom() {
 function renderLooks() {
   const b = state.run?.brief || { ...DEFAULT_BRIEF, ...state.brief };
   $("#looks-title").textContent = `For your ${b.occasion === "Gala dinner" ? "gala" : (b.occasion || "evening").toLowerCase()}, Miranda selected these looks.`;
-  $("#looks").innerHTML = LOOKS.map((l) => {
+  useData();
+  $("#looks").innerHTML = L.map((l) => {
     const added = !!state.cart[l.id];
     return `<article class="look" data-look="${l.id}">
       <div class="look-img"><img src="${l.hero}" alt="${esc(l.title)}"><span class="num">${l.id}</span>${l.alt ? '<span class="alt">Alternative direction</span>' : ""}</div>
@@ -352,7 +472,7 @@ function renderLooks() {
         <p class="rationale">“${esc(l.rationale)}”</p>
         <div class="rationale-by"><img src="${AGENTS.miranda.img}" alt="">Miranda, Lead Stylist</div>
         <div class="items">${l.items.map((k) => {
-          const p = PRODUCTS[k];
+          const p = P[k];
           return `<div class="item"><img src="${p.img}" alt="${esc(p.name)}"><div><div class="ret">${p.retailer}</div>
             <div class="nm"><a href="${p.url}" target="_blank" rel="noopener">${esc(p.name)}</a></div>
             <div class="av ${p.low ? "low" : ""}">${esc(p.color)} · ${esc(p.stock)}</div></div>
@@ -391,9 +511,9 @@ function openRefine(el, id) {
 }
 
 function addLook(id) {
-  const look = LOOKS.find((l) => l.id === id);
+  const look = L.find((l) => l.id === id);
   if (state.cart[id]) { openBag(); return; }
-  state.cart[id] = [...look.items];
+  state.cart[id] = { title: look.title, items: look.items.map((k) => P[k]) };
   renderBag();
   renderLooks();
   const btn = $("#bag-btn");
@@ -403,15 +523,15 @@ function addLook(id) {
 
 function renderBag() {
   const ids = Object.keys(state.cart);
-  const count = ids.reduce((n, id) => n + state.cart[id].length, 0);
+  const count = ids.reduce((n, id) => n + state.cart[id].items.length, 0);
   $("#bag-count").textContent = count;
   let total = 0;
   $("#bag-items").innerHTML = ids.length ? ids.map((id) => {
-    const look = LOOKS.find((l) => l.id === id);
-    const sub = lookTotal(state.cart[id]);
+    const look = state.cart[id];
+    const sub = look.items.reduce((t, p) => t + p.price, 0);
     total += sub;
     return `<li class="grp"><span>Look ${id} · ${esc(look.title)}</span><button class="link" data-remove="${id}" type="button">Remove</button></li>` +
-      state.cart[id].map((k) => { const p = PRODUCTS[k]; return `<li class="mini"><img src="${p.img}" alt=""><div>${esc(p.name)}<small>${p.retailer} · ${esc(p.color)}</small></div><b>${money(p.price)}</b></li>`; }).join("");
+      state.cart[id].items.map((p) => { return `<li class="mini"><img src="${p.img}" alt=""><div>${esc(p.name)}<small>${p.retailer}${p.color ? " · " + esc(p.color) : ""}</small></div><b>${money(p.price)}</b></li>`; }).join("");
   }).join("") : `<li class="empty">Your bag is empty. Miranda's looks are waiting.</li>`;
   $("#bag-total").textContent = money(total);
   $$("[data-remove]").forEach((b) => b.addEventListener("click", () => { delete state.cart[b.dataset.remove]; renderBag(); if (!$("#view-looks").hidden) renderLooks(); }));
@@ -440,8 +560,41 @@ $("#curtain-play").addEventListener("click", () => startRun({ ...DEFAULT_BRIEF, 
 $("#bag-btn").addEventListener("click", openBag);
 $("#bag-close").addEventListener("click", closeBag);
 $("#scrim").addEventListener("click", closeBag);
-$("#checkout-btn").addEventListener("click", () => {
+$("#checkout-btn").addEventListener("click", async () => {
   if (!Object.keys(state.cart).length) return toast("Add a look first.");
-  toast("Stripe test-mode checkout connects in Phase 2 — nothing was charged.");
+  const btn = $("#checkout-btn");
+  const items = Object.values(state.cart).flatMap((l) => l.items.map((p) => ({ url: p.url, name: p.name })));
+  btn.disabled = true;
+  try {
+    const r = await fetch("/api/checkout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items }) });
+    const d = await r.json();
+    if (!r.ok || !d.url) throw new Error(d.detail || `HTTP ${r.status}`);
+    sessionStorage.setItem("flicsy-cart", JSON.stringify(state.cart));  // restore the bag if the customer cancels
+    location.href = d.url;  // Stripe-hosted test checkout
+  } catch (e) {
+    console.error("Checkout failed:", e);
+    toast(`Checkout unavailable: ${e.message}. Your bag is saved — nothing was charged.`);
+    btn.disabled = false;
+  }
 });
+
+/* Returning from Stripe test checkout */
+(() => {
+  const q = new URLSearchParams(location.search).get("checkout");
+  if (!q) return;
+  const saved = sessionStorage.getItem("flicsy-cart");
+  history.replaceState(null, "", "/#/looks");
+  route();
+  if (q === "success") {
+    sessionStorage.removeItem("flicsy-cart");
+    $("#bag-items").innerHTML = `<li class="empty" style="font-style:normal"><span class="label" style="color:var(--done)">Payment complete · Stripe test mode</span><br><br>This was a test transaction. No retailer order was placed.</li>`;
+    $("#bag-total").textContent = "$0";
+    setTimeout(openBag, 0);  // after the boot route() below, which closes the bag
+  } else if (saved) {
+    state.cart = JSON.parse(saved);
+    renderBag();
+    setTimeout(openBag, 0);
+    toast("Checkout cancelled — your bag is just as you left it.");
+  }
+})();
 route();

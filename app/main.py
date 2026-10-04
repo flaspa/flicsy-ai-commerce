@@ -5,8 +5,21 @@ from fastapi.staticfiles import StaticFiles
 
 from app import config  # noqa: F401  (loads .env)
 from app.config import PROJECT_ROOT
+from app.checkout import router as checkout_router
+from app.live import router as live_router
 
 app = FastAPI(title="Flicsy")
+app.include_router(live_router)
+app.include_router(checkout_router)
+
+
+@app.on_event("startup")
+async def warm_moss() -> None:
+    """Load the Moss index once (~10 s) so customer queries take milliseconds."""
+    import asyncio
+
+    from app.research import moss_client
+    asyncio.create_task(moss_client())
 
 
 @app.get("/health")

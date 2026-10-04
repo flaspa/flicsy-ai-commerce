@@ -255,9 +255,9 @@ em { font-style: italic; }
 .feed { list-style: none; padding: 20px 28px 60px; display: grid; gap: 4px; max-height: 76vh; overflow-y: auto; }
 .feed-empty { color: #6b7280; font-size: 14px; padding: 40px 0; }
 .feed-empty a { color: #8fb3ff; }
-.ev { display: grid; grid-template-columns: 64px 36px 1fr; gap: 12px; padding: 10px 0; animation: rise .35s ease both; }
+.ev { display: grid; grid-template-columns: 64px 64px 1fr; gap: 12px; padding: 10px 0; animation: rise .35s ease both; }
 .ev time { font-family: var(--mono); font-size: 11px; color: #4b5563; padding-top: 3px; }
-.ev img { width: 32px; height: 32px; border-radius: 6px; }
+.ev img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
 .ev .who { font-size: 13px; font-weight: 600; color: #fff; }
 .ev .who code { font-family: var(--mono); font-weight: 400; color: #6b7280; margin-left: 6px; font-size: 12px; }
 .ev .txt { font-size: 14px; line-height: 1.55; color: #d7d9de; margin-top: 2px; }
@@ -270,6 +270,8 @@ em { font-style: italic; }
 .toolcall .res { display: block; color: #3fb36b; margin-top: 4px; }
 .ev.reject .txt { border-left: 3px solid #e5484d; background: rgba(229, 72, 77, .08); padding: 8px 12px; }
 .ev.reject .tagx { font-family: var(--mono); font-size: 10px; color: #e5484d; letter-spacing: .1em; }
+.ev.revision .txt { border-left: 3px solid #8fb3ff; background: rgba(143, 179, 255, .08); padding: 8px 12px; }
+.ev.revision .tagx { font-family: var(--mono); font-size: 10px; color: #8fb3ff; letter-spacing: .1em; }
 .ev.approve .txt { border-left: 3px solid #3fb36b; background: rgba(63, 179, 107, .08); padding: 8px 12px; }
 .ev.approve .tagx { font-family: var(--mono); font-size: 10px; color: #3fb36b; letter-spacing: .1em; }
 
