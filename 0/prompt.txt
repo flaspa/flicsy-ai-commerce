@@ -1,0 +1,762 @@
+<pasted_content id="3978">
+URGENT: fix ONLY Emily's Clipping Book thumbnails.
+
+TIME IS CRITICAL.
+Do not redesign the page.
+Do not touch Band, ZooWork, Tavily, Moss, Stripe, or the rest of the UI.
+Do not run the full agent workflow.
+Do not refactor unrelated code.
+Do not commit or push.
+
+PROBLEM
+
+Emily's Clipping Book is showing colored gradient placeholder cards instead of the real TikTok preview images.
+
+The Bright Data clipping-book records already contain a field like:
+
+preview_image
+
+Example records in:
+data/brightdata/tiktok_clipbook.jsonl
+
+already have real TikTok preview image URLs.
+
+Audit the current path:
+
+data/brightdata/tiktok_clipbook.jsonl
+→ app/research.py
+→ clipbook_query()
+→ API evidence payload
+→ app/static/app.js
+→ liveClips()
+
+LIKELY ROOT CAUSE
+
+`clipbook_query()` currently normalizes each clip but appears to DROP `preview_image`.
+
+Then `liveClips()` renders a gradient background instead of using a real image.
+
+FIX
+
+1. In `app/research.py`, include the Bright Data `preview_image` value in each normalized clip returned by `clipbook_query()`.
+
+For example, each clip result should contain:
+
+{
+  ...
+  "preview_image": c.get("preview_image")
+}
+
+2. In `app/static/app.js`, update `liveClips()` so each real clip card uses the actual preview image when available.
+
+Use the existing card dimensions.
+
+Requirements:
+- image fills the card
+- `object-fit: cover`
+- preserve aspect ratio
+- keep the existing text, creator, hashtags and play count readable
+- add a subtle dark gradient overlay behind the text if necessary
+
+3. If `preview_image` is missing or fails to load:
+- gracefully fall back to the existing colored gradient
+- do not leave a broken-image icon
+
+4. Do NOT invent thumbnails.
+Only use the actual `preview_image` supplied by the Bright Data record.
+
+5. Also verify that when real clipping-book evidence is being shown, the heading/note does NOT say:
+
+"Illustrative clips · Bright Data clipping book connects in Phase 2"
+
+For a real CLIPBOOK result it should say something concise like:
+
+"Real TikTok posts collected by Mira Picks via Bright Data"
+
+Do not change the fallback/rehearsal wording unless needed.
+
+MINIMUM TEST ONLY
+
+Do NOT run the 70-second full workflow.
+
+Use one existing Bright Data clipping-book query or a small direct test.
+
+Verify:
+- at least one returned clip includes `preview_image`
+- the browser displays the actual preview thumbnail
+- text remains readable
+- a missing image falls back cleanly
+
+Report only:
+- root cause
+- files changed
+- thumbnail works: yes/no
+- whether real CLIPBOOK labeling is correct
+- localhost URL
+
+Move immediately.
+</pasted_content id="3978">
+
+---
+
+<task-notification>
+<task-id>bagnb7gyz</task-id>
+<tool-use-id>toolu_0127TMWXJBnFJsUdH6Qs1KJo</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bagnb7gyz.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
+
+---
+
+<pasted_content id="3978">
+URGENT: do NOT rebuild Bright Data.
+
+Bright Data / Emily is already implemented and previously verified as:
+
+BRIGHT DATA: CLIPBOOK
+
+with real TikTok evidence from the Mira Picks clipping book.
+
+However, the current Emily's Clipping Book UI is showing the OLD fallback text:
+
+"Illustrative clips · Bright Data clipping book connects in Phase 2"
+
+and the scripted fallback cards.
+
+This means the UI is rendering `CLIPS` fallback data instead of the existing live `ev.clips` data.
+
+TIME IS CRITICAL.
+
+Audit ONLY the data/state path for Emily's Clipping Book:
+
+live run
+→ evidence API
+→ run.data.evidence.clips
+→ drawDesk()
+→ liveClips()
+
+Check why the current page is falling through to:
+
+clipsBody()
+
+instead of:
+
+liveClips(ev.clips)
+
+Likely causes to inspect:
+- current run is not marked `live`
+- evidence payload is not being attached to the current run
+- polling updates Band messages but not evidence state
+- stale rehearsal state survives after a live run
+- deployed/static frontend is using old JS
+- live run failure causes a fallback even though Bright Data evidence succeeded
+
+GOAL:
+
+When a LIVE run has Bright Data clipping-book evidence:
+
+Emily's Clipping Book MUST show:
+- real TikTok records
+- real creators
+- real play counts
+- real links
+- real preview images when available
+- label:
+  "Real TikTok posts collected by Mira Picks via Bright Data"
+
+It must NOT show:
+"Illustrative clips · Bright Data clipping book connects in Phase 2"
+
+unless the application is genuinely in FALLBACK / rehearsal mode.
+
+Also add a small explicit state indicator if useful:
+
+LIVE · BRIGHT DATA
+
+or
+
+REHEARSAL · FALLBACK
+
+so we can immediately tell which data source is being shown.
+
+Do NOT touch the Bright Data retrieval logic unless the evidence payload is actually missing.
+Do NOT touch Band, ZooWork, Tavily, Moss, Stripe, or layout.
+Do NOT run the full 75-second workflow unless absolutely necessary.
+
+First inspect the current live-run/evidence state and fix the smallest bug.
+
+Report only:
+- root cause
+- file changed
+- whether live Bright Data evidence now renders
+- whether fallback wording only appears in rehearsal mode
+- localhost URL
+
+Move immediately.
+</pasted_content id="3978">
+
+---
+
+<pasted_content id="3978">
+URGENT: improve ONLY the rehearsal/fallback Emily Clipping Book cards.
+
+The live Bright Data path is already correct.
+
+The issue is that REHEARSAL · FALLBACK mode still uses gradient placeholder cards.
+
+Do NOT touch the live Bright Data path.
+
+For the fallback/rehearsal `CLIPS` data only:
+
+- assign local/static representative fashion images to the four fallback cards
+- use existing project imagery if suitable
+- do NOT fetch new external assets
+- preserve all existing text, tags, play counts, layout, and behavior
+- use object-fit: cover
+- add the same dark text gradient overlay as the live cards
+- if no suitable image exists for a card, leave the gradient fallback
+
+Do not redesign anything.
+Do not touch Band, ZooWork, Tavily, Bright Data retrieval, Moss, Stripe, or backend logic.
+Do not run the full live workflow.
+Do not commit or push.
+
+Report only:
+- files changed
+- whether all four rehearsal cards now have images
+- localhost URL
+
+Move immediately.
+</pasted_content id="3978">
+
+---
+
+restart on the prompt you were working on
+
+---
+
+<pasted_content id="3978">
+URGENT: make the Flicsy hackathon demo fast, deterministic, and presentation-safe by adding a VERIFIED LIVE RUN REPLAY mode.
+
+TIME IS CRITICAL.
+
+The full live workflow already works, but it takes approximately 60–75 seconds and is too slow/risky for a 2–3 minute hackathon presentation.
+
+DO NOT optimize or redesign the live workflow.
+
+Instead, create a fast replay of ONE previously verified successful live run.
+
+IMPORTANT:
+This must NOT use the old invented rehearsal data.
+
+The replay must contain actual outputs captured from a successful live run:
+
+- real Tavily sources
+- real Bright Data / TikTok clipping-book evidence
+- real TikTok preview_image thumbnails
+- real Moss / Everlane products
+- real Band transcript
+- real @mentions
+- real Nigel REQUEST CHANGE
+- real Serena revision
+- real Nigel final recommendation
+- real Miranda final approval
+- real final looks
+
+Do not invent new evidence.
+
+Do not redesign UI.
+Do not refactor unrelated code.
+Do not touch Stripe.
+Do not run broad tests.
+Do not commit.
+Do not push.
+
+==================================================
+DEFAULT MODE FOR PRESENTATION
+==================================================
+
+Set:
+
+DEMO REPLAY · VERIFIED LIVE RUN
+
+as the DEFAULT mode whenever the app opens.
+
+The presentation path must NOT automatically trigger the full live:
+
+ZooWork
+Band
+Tavily
+Bright Data
+Moss
+
+workflow.
+
+DEFAULT behavior:
+
+- app opens in DEMO REPLAY mode
+- customer journey uses the cached verified live run
+- replay finishes in approximately 10–15 seconds
+- all tabs reflect the SAME verified live run
+- no external API calls are made during replay
+- refresh returns to DEMO REPLAY mode by default
+- no query parameter or hidden setup step should be required
+
+Keep the real live workflow available only behind a small explicit control such as:
+
+RUN LIVE
+
+or:
+
+LIVE RUN
+
+Do NOT make LIVE mode the default.
+
+For the hackathon presentation:
+
+DEMO REPLAY = default
+LIVE RUN = optional/manual
+
+==================================================
+CACHE ONE VERIFIED LIVE RUN
+==================================================
+
+Create a small cached JSON representation of one previously verified successful live run.
+
+For example:
+
+data/demo/verified_live_run.json
+
+Use data already produced by the successful run if it exists in:
+
+- API state
+- saved evidence
+- logs
+- Band transcript
+- current run state
+- local data files
+
+Do NOT rerun the full 60–75 second workflow unless absolutely necessary to obtain missing data.
+
+The cached object should contain enough information for every existing view:
+
+- customer brief
+- Miranda assignment
+- Andy evidence
+- Emily evidence
+- Serena product candidates
+- Nigel critique
+- Serena revision
+- Nigel final review
+- Miranda final decision
+- final looks
+- Band messages
+- timestamps
+- tool-call metadata
+- product metadata
+- evidence metadata
+
+Use ONE coherent verified run.
+
+Do not mix outputs from unrelated runs if avoidable.
+
+==================================================
+REPLAY TIMING
+==================================================
+
+Replay the verified workflow visually in approximately 10–15 seconds total.
+
+Suggested visual sequence:
+
+0s
+Miranda receives brief
+
+~1–2s
+Miranda → @Andy + @Emily
+
+~3–5s
+Andy returns editorial evidence
+Emily returns social evidence
+
+~6–7s
+Serena proposes looks
+
+~8s
+Nigel REQUEST CHANGE
+
+~9–10s
+Serena REVISION
+
+~11s
+Nigel → @Miranda recommendation
+
+~12–14s
+Miranda FINAL APPROVAL
+
+Do NOT introduce realistic API delays.
+
+Replay delays are only for storytelling.
+
+Keep:
+
+Skip to result
+
+so I can jump immediately to the completed state during judging if needed.
+
+==================================================
+MODE LABELING
+==================================================
+
+Be completely transparent.
+
+When replay mode is active, show a small label:
+
+DEMO REPLAY · VERIFIED LIVE RUN
+
+Do NOT label the replay as LIVE.
+
+When the true external workflow is running, show:
+
+LIVE · BAND
+
+or equivalent.
+
+The user/judge should always be able to tell which mode is active.
+
+==================================================
+FASHION DESK
+==================================================
+
+The Fashion Desk continues to represent WHAT each specialist found.
+
+In replay mode, populate it using the cached REAL outputs.
+
+ANDY'S PRESS DESK
+
+Use the real Tavily evidence from the verified run:
+
+- actual publication
+- actual article title
+- actual URL
+- actual insight/direction
+
+Do not use the old illustrative Press Desk data.
+
+Label appropriately, for example:
+
+DEMO REPLAY · VERIFIED TAVILY EVIDENCE
+
+==================================================
+EMILY'S CLIPPING BOOK
+==================================================
+
+This is especially important.
+
+Do NOT use the old:
+
+"Illustrative clips · Bright Data clipping book connects in Phase 2"
+
+fallback cards during demo replay.
+
+Use the actual Bright Data records from the verified live run.
+
+Each replayed clip should preserve, when available:
+
+- preview_image
+- description
+- creator
+- play count
+- hashtags
+- TikTok URL
+- date
+- relevance/trend label
+
+Use the actual `preview_image` from the Bright Data record.
+
+Show real thumbnails.
+
+If an individual preview image fails to load, fall back gracefully to the current gradient card.
+
+Do NOT show broken-image icons.
+
+Label:
+
+DEMO REPLAY · VERIFIED BRIGHT DATA EVIDENCE
+
+or similarly concise wording.
+
+Do not claim a live scrape occurred during replay.
+
+==================================================
+SERENA'S SHOPPING BAG
+==================================================
+
+Use the real product candidates from the verified run.
+
+Preserve:
+
+- product name
+- retailer
+- price
+- sale price if present
+- image
+- product URL
+- availability/stock if available
+- product source
+- Moss source when applicable
+- Everlane catalog source when applicable
+
+Use the same actual candidate looks Serena proposed.
+
+Show the actual product removed/replaced during the Nigel revision.
+
+Do not fall back to the old scripted look data during replay.
+
+Label source honestly.
+
+==================================================
+NIGEL'S NOTES
+==================================================
+
+Use Nigel's actual critique from the verified run.
+
+Show:
+
+- original critique
+- REQUEST CHANGE
+- reason for rejection
+- revised candidate
+- second review
+- final recommendation to Miranda
+
+This should match the Band transcript from the same verified run.
+
+==================================================
+BEHIND THE CURTAIN
+==================================================
+
+Replay the ACTUAL Band transcript from the verified run.
+
+Label:
+
+DEMO REPLAY · VERIFIED BAND RUN
+
+Optionally show the original Band room ID.
+
+Preserve:
+
+- timestamps
+- agent names
+- @handles
+- @mentions
+- handoffs
+- tool calls
+- REQUEST CHANGE
+- REVISION
+- FINAL APPROVAL
+
+Do NOT generate new fake Band messages.
+
+Use the exact or faithfully normalized messages produced by the verified run.
+
+If the verified transcript includes tool calls such as:
+
+tavily.search
+brightdata.clipbook.query
+moss.search
+
+show them.
+
+But do NOT make external calls during replay.
+
+==================================================
+YOUR LOOKS
+==================================================
+
+The final customer-facing Your Looks page must also use the SAME cached verified run.
+
+Use:
+
+Serena real products
+→ Nigel actual critique/revision
+→ Miranda actual final selection
+
+Show:
+
+- real product images
+- product names
+- retailer
+- price
+- availability when available
+- product URL
+- total look price
+- Miranda rationale
+- Nigel comment if already present
+
+Do not show the old scripted products when replay mode succeeds.
+
+==================================================
+CUSTOMER FLOW
+==================================================
+
+Keep the existing customer conversation UI.
+
+For presentation mode:
+
+1. customer enters/completes brief
+2. clicks Consult the Fashion Desk
+3. DEMO REPLAY starts immediately
+4. Fashion Desk visibly progresses over ~10–15 seconds
+5. Behind the Curtain replays the verified Band negotiation
+6. evidence drawers populate from verified real data
+7. final looks appear
+8. cart remains usable
+9. Stripe remains whatever its current verified behavior is
+
+Do not trigger live research automatically.
+
+==================================================
+LIVE MODE
+==================================================
+
+Do NOT remove the real live workflow.
+
+Keep an explicit small control:
+
+RUN LIVE
+
+When manually selected:
+
+- use real ZooWork agents
+- real Band
+- Tavily
+- Bright Data path
+- Moss
+- existing fallbacks
+
+Do not change the live workflow architecture.
+
+This mode is for proof/testing, not the default presentation path.
+
+==================================================
+REHEARSAL / OLD FALLBACK
+==================================================
+
+The old invented rehearsal data may remain as the emergency fallback if necessary.
+
+But presentation priority should be:
+
+1. DEMO REPLAY · VERIFIED LIVE RUN
+2. LIVE RUN when explicitly selected
+3. old rehearsal/fallback only if both fail
+
+Do not show the old "Phase 2" Bright Data wording during verified replay.
+
+==================================================
+DEMO SAFETY
+==================================================
+
+Replay mode must:
+
+- make zero external API calls
+- work even if Tavily/Bright Data/Moss/ZooWork/Band are temporarily unavailable
+- use only local cached verified data
+- never leave the UI stuck
+- preserve Skip to result
+- survive page refresh
+- default back to replay mode
+
+If cached verified data cannot be loaded:
+
+- fall back to the existing rehearsal flow
+- clearly label it FALLBACK
+- do not crash
+
+==================================================
+MINIMUM TEST ONLY
+==================================================
+
+Do NOT run the full 60–75 second live workflow.
+
+Test only the replay path.
+
+Verify:
+
+1. app opens in DEMO REPLAY mode by default
+2. no external tool/API calls happen during replay
+3. replay starts immediately
+4. replay completes in approximately 10–15 seconds
+5. Fashion Desk cards progress
+6. Andy shows real cached Tavily sources
+7. Emily shows real cached Bright Data clips
+8. Emily shows actual thumbnails where available
+9. Serena shows real cached products
+10. Nigel shows actual critique/revision
+11. Behind the Curtain replays the actual Band transcript
+12. Your Looks uses the same verified real products
+13. Skip to result works
+14. refreshing the app returns to replay mode
+15. RUN LIVE remains available as an explicit option
+
+Do not run broad tests.
+
+==================================================
+WHEN FINISHED REPORT ONLY
+==================================================
+
+MODE
+- default mode: DEMO REPLAY / other
+
+CACHE
+- cached run file path
+- source verified live run
+- original Band room ID
+
+REPLAY
+- replay duration
+- external API calls during replay: yes/no
+
+ANDY
+- real cached Tavily evidence: yes/no
+
+EMILY
+- real cached Bright Data evidence: yes/no
+- real preview thumbnails: yes/no
+
+SERENA
+- real cached products: yes/no
+- Moss products represented: yes/no
+
+BAND
+- real cached Band transcript replayed: yes/no
+- Nigel → Serena revision present: yes/no
+
+UI
+- Your Looks uses verified cached run: yes/no
+- Skip to result works: yes/no
+
+LIVE
+- explicit RUN LIVE control preserved: yes/no
+
+FILES
+- files changed
+
+URL
+- localhost URL
+
+Do not commit.
+Do not push.
+
+Move immediately and do no unnecessary work.
+</pasted_content id="3978">
+
+---
+
+<task-notification>
+<task-id>bxq07cvtp</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>C:\Users\flavi\AppData\Local\Temp\claude\c--Flavia-Code-flicsy-ai-commerce\7986cc66-1336-4cc3-85fb-d9c16d42351e\tasks\bxq07cvtp.output</output-file>
+<status>failed</status>
+<summary>Background command "Start the Flicsy server on port 8010" failed with exit code 1</summary>
+</task-notification>
